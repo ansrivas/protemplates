@@ -28,7 +28,7 @@ func (p Python) Create(appname string) error {
 	gitignorePath := path.Join(basedir, ".gitignore")
 	makefilePath := path.Join(basedir, "Makefile")
 	requirementsPath := path.Join(basedir, "requirements.txt")
-
+	readmePath := path.Join(basedir, "README.md")
 	initpyPath := path.Join(appdir, "__init__.py")
 
 	conftestPath := path.Join(testdir, "conftest.py")
@@ -43,6 +43,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
+	pathToContent[readmePath] = fmt.Sprintf(readmeText, appname)
 
 	for path, content := range pathToContent {
 
