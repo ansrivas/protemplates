@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -65,4 +66,18 @@ func Test_SanitizeInput(t *testing.T) {
 	assert := assert.New(t)
 	expected := "python"
 	assert.Equal(SanitizeInput("pythoN"), expected, "Should properly sanitize input strings. ")
+}
+
+// ----------------------------------------------------------------------------------------------
+
+type TestLanguage struct{}
+
+func (t TestLanguage) Create(appname string) error {
+	fmt.Println("Call to create is successful with appname:", appname)
+	return nil
+}
+func Test_Create(t *testing.T) {
+	assert := assert.New(t)
+	err := Create(TestLanguage{}, "myapp")
+	assert.Nil(err, "Should successfully test creation of projects, using interface")
 }
