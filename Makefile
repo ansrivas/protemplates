@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := help
+.DEFAULT_GOAL := test
 
 VERSION := $(shell git describe --always --long)
 
@@ -17,8 +17,8 @@ clean:
 
 release:       ## Create a release build
 release:	clean
-	@GOOS=linux go build -o prebuilt/protemplates -i -v -ldflags="-s -w -X main.version=${VERSION}" github.com/ansrivas/protemplates 
-	
+	@GOOS=linux go build -o prebuilt/protemplates -i -v -ldflags="-s -w -X main.version=${VERSION}" github.com/ansrivas/protemplates
+
 
 ensure:        ## Run dep ensure.
 ensure:
