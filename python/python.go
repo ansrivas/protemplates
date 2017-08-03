@@ -24,6 +24,7 @@ func Create(appname string) error {
 	setupcfgPath := path.Join(basedir, "setup.cfg")
 	gitignorePath := path.Join(basedir, ".gitignore")
 	makefilePath := path.Join(basedir, "Makefile")
+	requirementsPath := path.Join(basedir, "requirements.txt")
 
 	initpyPath := path.Join(appdir, "__init__.py")
 
@@ -38,6 +39,7 @@ func Create(appname string) error {
 	pathToContent[testfilePath] = testfileText
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
+	pathToContent[requirementsPath] = requirementsText
 
 	for path, content := range pathToContent {
 

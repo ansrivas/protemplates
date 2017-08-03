@@ -58,3 +58,5 @@ help:          ## Show available options with this Makefile
 test:          ## Run all the tests
 test:
 	python setup.py test`
+
+var requirementsText = ``
