@@ -8,7 +8,7 @@ help:          ## Show available options with this Makefile
 .PHONY : test
 test:          ## Run all the tests
 test:
-	chmod +x && ./test.sh
+	chmod +x ./test.sh && ./test.sh
 
 clean:         ## Clean the application
 clean:
