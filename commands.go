@@ -15,6 +15,16 @@ var (
 
 func init() {
 	rootCmd.AddCommand(cmdCreate)
+	rootCmd.AddCommand(cmdVersion)
+}
+
+var cmdVersion = &cobra.Command{
+	Use:   "version",
+	Short: "Print the version number of protemplates",
+	Long:  `All softwares have versions. This is protemplate's`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Protemplates: ", version)
+	},
 }
 
 var cmdCreate = &cobra.Command{
