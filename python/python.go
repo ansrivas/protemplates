@@ -7,8 +7,11 @@ import (
 	"github.com/ansrivas/protemplates/internal"
 )
 
+// Python ...
+type Python struct{}
+
 // Create creates a template folder structure for a python project.
-func Create(appname string) error {
+func (p Python) Create(appname string) error {
 	basedir := appname
 	appdir := path.Join(appname, appname)
 	testdir := path.Join(appname, "tests")

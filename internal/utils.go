@@ -3,8 +3,10 @@ package internal
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
+// CreateDir create a directory with a given name, only if it doesn't exist.
 func CreateDir(dirname string) error {
 	if _, err := os.Stat(dirname); os.IsNotExist(err) {
 		return os.Mkdir(dirname, os.ModePerm)
@@ -12,6 +14,7 @@ func CreateDir(dirname string) error {
 	return fmt.Errorf("Unable to create directory %s", dirname)
 }
 
+// MustCreateDir creates a directory with given name/path. Panics if the directory already exists.
 func MustCreateDir(dirpath string) {
 	err := CreateDir(dirpath)
 	if err != nil {
@@ -19,6 +22,7 @@ func MustCreateDir(dirpath string) {
 	}
 }
 
+// WriteToFile writes a given `data` string to a `filepath`.
 func WriteToFile(filepath string, data string) error {
 	f, err := os.Create(filepath)
 	if err != nil {
@@ -28,4 +32,15 @@ func WriteToFile(filepath string, data string) error {
 	f.WriteString(data)
 	f.Sync()
 	return nil
+}
+
+// Create accepts anything of interface type Project and calls underlying Create method.
+func Create(p Project, appname string) error {
+	return p.Create(appname)
+}
+
+// SanitizeInput accepts a language string, checks if its allowed.
+// If its allowed, returns a lowercase representation else error.
+func SanitizeInput(language string) string {
+	return strings.ToLower(language)
 }
