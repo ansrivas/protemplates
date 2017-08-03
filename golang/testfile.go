@@ -1,6 +1,6 @@
 package golang
 
-var testShellText = `
+const testShellText = `
 #!/bin/sh
 # Generate test coverage statistics for Go packages.
 #
