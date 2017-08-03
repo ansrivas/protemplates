@@ -3,6 +3,7 @@ package python
 import (
 	"fmt"
 	"path"
+	"strings"
 
 	"github.com/ansrivas/protemplates/internal"
 )
@@ -16,26 +17,34 @@ func (p Python) Create(appname string) error {
 	appdir := path.Join(appname, appname)
 	testdir := path.Join(appname, "tests")
 
-	internal.MustCreateDir(basedir)
-	internal.MustCreateDir(appdir)
-
-	internal.MustCreateDir(testdir)
+	dirs := []string{basedir, appdir, testdir}
+	for _, dir := range dirs {
+		internal.MustCreateDir(dir)
+	}
 
 	pathToContent := make(map[string]string)
 
+	//--------------------------------------------------------
 	setuppyPath := path.Join(basedir, "setup.py")
 	setupcfgPath := path.Join(basedir, "setup.cfg")
 	gitignorePath := path.Join(basedir, ".gitignore")
 	makefilePath := path.Join(basedir, "Makefile")
 	requirementsPath := path.Join(basedir, "requirements.txt")
 	readmePath := path.Join(basedir, "README.md")
-	initpyPath := path.Join(appdir, "__init__.py")
+	//--------------------------------------------------------
 
+	//--------------------------------------------------------
+	initpyPath := path.Join(appdir, "__init__.py")
+	//--------------------------------------------------------
+
+	//--------------------------------------------------------
 	conftestPath := path.Join(testdir, "conftest.py")
 	testfilePath := path.Join(testdir, "test_first.py")
+	//--------------------------------------------------------
 
 	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appname)
 
+	//--------------------------------------------------------
 	pathToContent[setupcfgPath] = setupCfgText
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[conftestPath] = conftestText
@@ -43,7 +52,8 @@ func (p Python) Create(appname string) error {
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
-	pathToContent[readmePath] = fmt.Sprintf(readmeText, appname)
+	pathToContent[readmePath] = fmt.Sprintf(readmeText, strings.Title(appname))
+	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
 
