@@ -17,3 +17,7 @@ release:       ## Create a release build
 release:	clean
 	@GOOS=linux go build -ldflags="-s -w" github.com/ansrivas/protemplates \
 	&& mv ./protemplates prebuilt
+
+ensure:        ## Run dep ensure.
+ensure:
+	@ dep ensure
