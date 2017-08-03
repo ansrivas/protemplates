@@ -17,8 +17,8 @@ clean:
 
 release:       ## Create a release build
 release:	clean
-	@GOOS=linux go build -i -v -ldflags="-s -w -X main.version=${VERSION}" github.com/ansrivas/protemplates \
-	&& mv ./protemplates prebuilt
+	@GOOS=linux go build -o prebuilt/protemplates -i -v -ldflags="-s -w -X main.version=${VERSION}" github.com/ansrivas/protemplates 
+	
 
 ensure:        ## Run dep ensure.
 ensure:
