@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/ansrivas/ptemplate/internal"
+	"github.com/ansrivas/protemplates/internal"
 )
 
 // Create creates a template folder structure for a python project.

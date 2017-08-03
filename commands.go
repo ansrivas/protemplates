@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ansrivas/ptemplate/python"
+	"github.com/ansrivas/protemplates/python"
 	"github.com/spf13/cobra"
 )
 
 var (
-	rootCmd = &cobra.Command{Use: "ptemplate"}
+	rootCmd = &cobra.Command{Use: "protemplates"}
 )
 
 func init() {
