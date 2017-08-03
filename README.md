@@ -2,7 +2,7 @@
 This creates a simple project structure for different projects. ( similar to Cargo from rust )
 
 ---
-[![Build Status](https://travis-ci.org/ansrivas/protemplates.svg?branch=master](https://travis-ci.org/ansrivas/protemplates)
+[![Build Status](https://travis-ci.org/ansrivas/protemplates.svg?branch=master)](https://travis-ci.org/ansrivas/protemplates)
 
 Usage:
 
