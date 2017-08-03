@@ -36,7 +36,8 @@ var cmdCreate = &cobra.Command{
 		fmt.Scanf("%s", &projectName)
 		err := python.Create(projectName)
 		if err != nil {
-			fmt.Printf("Successfully created python project %s in current directory", projectName)
+			panic(fmt.Sprintf("Unable to create the project: %s", projectName))
 		}
+		fmt.Printf("Successfully created python project %s in current directory", projectName)
 	},
 }
