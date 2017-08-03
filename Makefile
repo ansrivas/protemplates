@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := help
 
 VERSION := $(shell git describe --always --long)
 
@@ -8,7 +8,7 @@ help:          ## Show available options with this Makefile
 .PHONY : test
 test:          ## Run all the tests
 test:
-	./test.sh
+	chmod +x && ./test.sh
 
 clean:         ## Clean the application
 clean:
