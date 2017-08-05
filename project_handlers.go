@@ -9,10 +9,8 @@ import (
 	"github.com/ansrivas/protemplates/python"
 )
 
-func handleGolangProject() {
-	var projectName, scm, username string
-	fmt.Println("Please enter a desired project name:")
-	fmt.Scanf("%s", &projectName)
+func handleGolangProject(projectName string) {
+	var scm, username string
 
 	fmt.Println("Please enter a desired scm eg. github.com or bitbucket.com")
 	fmt.Scanf("%s", &scm)
@@ -34,11 +32,8 @@ func handleGolangProject() {
 
 }
 
-func handlePythonProject() {
+func handlePythonProject(projectName string) {
 	implementation := python.Python{}
-	var projectName string
-	fmt.Println("Please enter a desired project name:")
-	fmt.Scanf("%s", &projectName)
 	err := internal.Create(implementation, projectName)
 	if err != nil {
 		panic(fmt.Sprintf("Unable to create the project: %s", projectName))
@@ -49,11 +44,14 @@ func handlePythonProject() {
 func handleProjectCreation(language string) {
 	lang := internal.SanitizeInput(language)
 
+	var projectName string
+	fmt.Println("Please enter a desired project name:")
+	fmt.Scanf("%s", &projectName)
 	switch lang {
 	case "python":
-		handlePythonProject()
+		handlePythonProject(projectName)
 	case "go", "golang":
-		handleGolangProject()
+		handleGolangProject(projectName)
 	default:
 		fmt.Printf("\033[31mException: %s is currently not supported.\033[39m\n\n", language)
 		os.Exit(1)
