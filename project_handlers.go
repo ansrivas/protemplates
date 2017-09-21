@@ -55,7 +55,7 @@ func handleProjectCreation(language string) {
 	case "go", "golang":
 		handleGolangProject()
 	default:
-		fmt.Printf("\033[31mException: %s is currently not supported.\033[39m\n\n", language)
+		fmt.Printf("\033[31mException: Language %s is currently not supported.\033[39m\n\n", language)
 		os.Exit(1)
 	}
 
