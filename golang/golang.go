@@ -35,7 +35,7 @@ func (g Golang) Create(appname string) error {
 	gitignorePath := path.Join(srcdir, ".gitignore")
 	mainPath := path.Join(srcdir, "main.go")
 
-	pathToContent[makefilePath] = fmt.Sprintf(makefileText, g.Username, appname)
+	pathToContent[makefilePath] = fmt.Sprintf(makefileText, g.Username, appname, appname)
 	pathToContent[readmePath] = fmt.Sprintf(readmeText, appname)
 	pathToContent[testShellPath] = testShellText
 	pathToContent[gitignorePath] = gitignoreText
