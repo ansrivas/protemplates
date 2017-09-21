@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := help
 
 VERSION := $(shell git describe --always --long)
 
