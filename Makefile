@@ -39,6 +39,7 @@ endif
 crossbuild: ensure
 	mkdir -p build/${PROJECT_NAME}-$(IDENTIFIER)
 	make build FLAGS="-o build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
+	tar cvzf "build/${PROJECT_NAME}-$(IDENTIFIER).tgz" "build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 
 release:       ## Create a release build.
 release:
