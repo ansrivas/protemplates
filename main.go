@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-// This variable gets populated from the makefile or git tags automatically
+// Version gets populated from the makefile or git tags automatically
 var Version = "undefined"
 
 func main() {

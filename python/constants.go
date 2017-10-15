@@ -20,7 +20,6 @@ def get_version():
 
 setup(
     name='%s',
-    version='0.1.0',
     description="Convenient cli app for docker volume management.",
     long_description=long_description,
     version=get_version(),
