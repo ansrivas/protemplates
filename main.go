@@ -6,7 +6,7 @@ import (
 )
 
 // This variable gets populated from the makefile or git tags automatically
-var version = "undefined"
+var Version = "undefined"
 
 func main() {
 	if err := rootCmd.Execute(); err != nil {
