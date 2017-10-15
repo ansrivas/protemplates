@@ -21,7 +21,7 @@ var cmdVersion = &cobra.Command{
 	Short: "Print the version number of protemplates",
 	Long:  `All softwares have versions. This is protemplate's`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Protemplates: ", version)
+		fmt.Println("Protemplates: ", Version)
 	},
 }
 
