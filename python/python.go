@@ -31,6 +31,7 @@ func (p Python) Create(appname string) error {
 	makefilePath := path.Join(basedir, "Makefile")
 	requirementsPath := path.Join(basedir, "requirements.txt")
 	readmePath := path.Join(basedir, "README.md")
+	manifestPath := path.Join(basedir, "MANIFEST.in")
 	//--------------------------------------------------------
 
 	//--------------------------------------------------------
@@ -42,7 +43,7 @@ func (p Python) Create(appname string) error {
 	testfilePath := path.Join(testdir, "test_first.py")
 	//--------------------------------------------------------
 
-	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appname)
+	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appname, appname)
 
 	//--------------------------------------------------------
 	pathToContent[setupcfgPath] = setupCfgText
@@ -53,6 +54,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
 	pathToContent[readmePath] = fmt.Sprintf(readmeText, strings.Title(appname))
+	pathToContent[manifestPath] = manifestText
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
