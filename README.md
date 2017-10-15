@@ -32,8 +32,4 @@ Please enter a desired project name:
 ```
 
 ---
-For convenience a binary is also committed in the github repo, under prebuilt directory, compiled using:
-
-```
-GOOS=linux go build -ldflags="-s -w" github.com/ansrivas/protemplates
-```
+Download a binary from [releases](https://github.com/ansrivas/protemplates/releases). Extract and its ready to be used.
