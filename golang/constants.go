@@ -89,13 +89,14 @@ var readmeText = `%s:
 
 var mainText = `package main
 
-import(
+import (
 	"fmt"
 )
-var version = "undefined"
 
-func main(){
-	fmt.Println("Current version is: %s", version)
+// Version is used to set the current version of this build.
+var Version = "undefined"
+
+func main() {
+	fmt.Printf("Current version is: %s", Version)
 }
-
 `

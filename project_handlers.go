@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/ansrivas/protemplates/golang"
 	"github.com/ansrivas/protemplates/internal"
@@ -28,7 +29,7 @@ func handleGolangProject(projectName string) {
 	if err != nil {
 		panic(fmt.Sprintf("Unable to create the project: %s", projectName))
 	}
-	fmt.Printf("Successfully created python project %s in current directory\n", projectName)
+	fmt.Printf("Successfully created golang project %s in current directory\n", projectName)
 
 }
 
@@ -47,7 +48,7 @@ func handleProjectCreation(language string) {
 	var projectName string
 	fmt.Println("Please enter a desired project name:")
 	fmt.Scanf("%s", &projectName)
-	switch lang {
+	switch strings.ToLower(lang) {
 	case "python":
 		handlePythonProject(projectName)
 	case "go", "golang":
