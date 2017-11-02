@@ -96,13 +96,24 @@ This project can be used to ...
 
 Install:
 ---
-Clone the project and run ...
+1. Clone the project.
 
-Test:
+2. Create a virtualenv using:
+
+` +
+
+	"\t```\n" +
+	"\tconda create --name %s python=3\n" +
+
+	"\tsource activate %s\n" +
+	"\t```\n\n" +
+
+	`Test:
 ---
-To run the tests: ...
+1. To run the tests:` +
+	"\n\n\t`make test`\n\n" +
 
-
+	`
 Usage:
 ---
 
