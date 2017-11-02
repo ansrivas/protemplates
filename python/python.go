@@ -32,6 +32,7 @@ func (p Python) Create(appname string) error {
 	requirementsPath := path.Join(basedir, "requirements.txt")
 	readmePath := path.Join(basedir, "README.md")
 	manifestPath := path.Join(basedir, "MANIFEST.in")
+	devEnvYamlPath := path.Join(basedir, "dev_environment.yml")
 	//--------------------------------------------------------
 
 	//--------------------------------------------------------
@@ -55,6 +56,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[requirementsPath] = requirementsText
 	pathToContent[readmePath] = fmt.Sprintf(readmeText, strings.Title(appname), appname, appname)
 	pathToContent[manifestPath] = manifestText
+	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appname)
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
