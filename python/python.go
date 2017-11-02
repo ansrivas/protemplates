@@ -53,7 +53,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
-	pathToContent[readmePath] = fmt.Sprintf(readmeText, strings.Title(appname))
+	pathToContent[readmePath] = fmt.Sprintf(readmeText, strings.Title(appname), appname, appname)
 	pathToContent[manifestPath] = manifestText
 	//--------------------------------------------------------
 
