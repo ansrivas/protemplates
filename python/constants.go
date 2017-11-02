@@ -98,13 +98,16 @@ Install:
 ---
 1. Clone the project.
 
-2. Create a virtualenv using:
-
-` +
-
+2. Create a virtualenv using venv or virtualenv:` +
+	"\n\n\t```\n" +
+	"\tcd %s\n" +
+	"\t. venv/bin/activate\n" +
 	"\t```\n" +
-	"\tconda create --name %s python=3\n" +
 
+	`3. If using conda, edit dev-environment.yml file:` +
+
+	"\n\n\t```\n" +
+	"\tconda env create --force -f dev_environment.yml\n" +
 	"\tsource activate %s\n" +
 	"\t```\n\n" +
 
@@ -127,3 +130,11 @@ Example:
 
 var manifestText = `
 include README.md`
+
+var devEnvYamlText = `name: %s
+channels:
+  - defaults
+dependencies:
+- python=3.6.3
+- pip:
+    - future`
