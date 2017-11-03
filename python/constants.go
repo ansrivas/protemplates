@@ -46,7 +46,7 @@ var setupCfgText = `[aliases]
 test=pytest
 
 [tool:pytest]
-addopts = --verbose -vv --cov %s`
+addopts = --verbose -vv --cov-report term-missing --cov %s`
 
 var conftestText = `# !/usr/bin/env python
 # -*- coding: utf-8 -*-
