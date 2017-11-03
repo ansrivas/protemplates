@@ -47,7 +47,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appname, appname)
 
 	//--------------------------------------------------------
-	pathToContent[setupcfgPath] = setupCfgText
+	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appname)
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[conftestPath] = conftestText
 	pathToContent[testfilePath] = testfileText

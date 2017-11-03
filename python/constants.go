@@ -18,15 +18,17 @@ def get_version():
         return re.search(r"""__version__\s+=\s+(['"])(?P<version>.+?)\1""",
                          version_file.read()).group('version')
 
+install_requires = ['future']
+test_requires = ['pytest', 'pytest-sugar', 'pytest-asyncio', 'pytest-cov', ]
 setup(
     name='%s',
-    description="Convenient cli app for docker volume management.",
+    description="Some description about your project",
     long_description=long_description,
     version=get_version(),
     include_package_data=True,
-    install_requires=['future'],
-    setup_requires=['pytest-runner', 'pytest'],
-    tests_require=['pytest'],
+    install_requires=install_requires,
+    setup_requires=['pytest-runner'],
+    tests_require=test_requires,
     packages=find_packages(),
     zip_safe=False,
     author="Your name here",
@@ -44,7 +46,7 @@ var setupCfgText = `[aliases]
 test=pytest
 
 [tool:pytest]
-addopts = --verbose -vv`
+addopts = --verbose -vv --cov %s`
 
 var conftestText = `# !/usr/bin/env python
 # -*- coding: utf-8 -*-
