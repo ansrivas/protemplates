@@ -8,7 +8,7 @@ import (
 	"github.com/ansrivas/protemplates/internal"
 )
 
-// Python ...
+// Python struct is responsible for creating golang projects
 type Python struct{}
 
 // Create creates a template folder structure for a python project.
