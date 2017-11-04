@@ -7,7 +7,7 @@ import (
 	"github.com/ansrivas/protemplates/internal"
 )
 
-// Golang ...
+// Golang struct is responsible for handling golang projects
 type Golang struct {
 	Scm      string
 	Username string
