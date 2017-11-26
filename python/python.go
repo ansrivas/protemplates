@@ -5,7 +5,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/ansrivas/protemplates/internal"
+	"github.com/ansrivas/protemplates/project"
 )
 
 // Python struct is responsible for creating golang projects
@@ -19,7 +19,7 @@ func (p Python) Create(appname string) error {
 
 	dirs := []string{basedir, appdir, testdir}
 	for _, dir := range dirs {
-		internal.MustCreateDir(dir)
+		project.MustCreateDir(dir)
 	}
 
 	pathToContent := make(map[string]string)
@@ -60,7 +60,7 @@ func (p Python) Create(appname string) error {
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
-		err := internal.WriteToFile(path, content)
+		err := project.WriteToFile(path, content)
 		if err != nil {
 			return fmt.Errorf("Unable to write file: %s", path)
 		}
