@@ -1,4 +1,4 @@
-package internal
+package project
 
 // Project interface to support creation of different projects.
 type Project interface {

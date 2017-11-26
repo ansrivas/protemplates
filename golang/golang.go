@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/ansrivas/protemplates/internal"
+	"github.com/ansrivas/protemplates/project"
 )
 
 // Golang struct is responsible for handling golang projects
@@ -24,7 +24,7 @@ func (g Golang) Create(appname string) error {
 	temp := ""
 	for _, dir := range dirs {
 		temp = path.Join(temp, dir)
-		internal.MustCreateDir(temp)
+		project.MustCreateDir(temp)
 	}
 
 	pathToContent := make(map[string]string)
@@ -42,7 +42,7 @@ func (g Golang) Create(appname string) error {
 	pathToContent[mainPath] = mainText
 
 	for path, content := range pathToContent {
-		err := internal.WriteToFile(path, content)
+		err := project.WriteToFile(path, content)
 		if err != nil {
 			return fmt.Errorf("Unable to write file: %s", path)
 		}
