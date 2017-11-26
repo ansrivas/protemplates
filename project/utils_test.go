@@ -64,8 +64,17 @@ func TestIndexTestSuite(t *testing.T) {
 
 func Test_SanitizeInput(t *testing.T) {
 	assert := assert.New(t)
-	expected := "python"
-	assert.Equal(SanitizeInput("pythoN"), expected, "Should properly sanitize input strings. ")
+	testStruct := []struct {
+		input  string
+		output string
+	}{
+		{"pythoN", "python"},
+		{"test-project", "test_project"},
+	}
+
+	for _, s := range testStruct {
+		assert.Equal(SanitizeInput(s.input), s.output, "Should properly sanitize input strings. ")
+	}
 }
 
 // ----------------------------------------------------------------------------------------------

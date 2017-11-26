@@ -48,6 +48,8 @@ func handleProjectCreation(language string) {
 	var projectName string
 	fmt.Println("Please enter a desired project name:")
 	fmt.Scanf("%s", &projectName)
+
+	projectName = project.SanitizeInput(projectName)
 	switch strings.ToLower(lang) {
 	case "python":
 		handlePythonProject(projectName)

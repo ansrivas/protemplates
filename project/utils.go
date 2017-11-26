@@ -36,8 +36,8 @@ func WriteToFile(filepath string, data string) error {
 
 // SanitizeInput accepts a language string, checks if its allowed.
 // If its allowed, returns a lowercase representation else error.
-func SanitizeInput(language string) string {
-	return strings.Replace(strings.ToLower(language), "-", "_", -1)
+func SanitizeInput(input string) string {
+	return strings.Replace(strings.ToLower(input), "-", "_", -1)
 }
 
 // Create accepts anything of interface type Project and calls underlying Create method.
