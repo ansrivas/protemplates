@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/ansrivas/protemplates/golang"
-	"github.com/ansrivas/protemplates/internal"
+	"github.com/ansrivas/protemplates/project"
 	"github.com/ansrivas/protemplates/python"
 )
 
@@ -25,7 +25,7 @@ func handleGolangProject(projectName string) {
 	}
 
 	implementation := golang.Golang{Scm: scm, Username: username}
-	err := internal.Create(implementation, projectName)
+	err := project.Create(implementation, projectName)
 	if err != nil {
 		panic(fmt.Sprintf("Unable to create the project: %s", projectName))
 	}
@@ -35,7 +35,7 @@ func handleGolangProject(projectName string) {
 
 func handlePythonProject(projectName string) {
 	implementation := python.Python{}
-	err := internal.Create(implementation, projectName)
+	err := project.Create(implementation, projectName)
 	if err != nil {
 		panic(fmt.Sprintf("Unable to create the project: %s", projectName))
 	}
@@ -43,7 +43,7 @@ func handlePythonProject(projectName string) {
 }
 
 func handleProjectCreation(language string) {
-	lang := internal.SanitizeInput(language)
+	lang := project.SanitizeInput(language)
 
 	var projectName string
 	fmt.Println("Please enter a desired project name:")
