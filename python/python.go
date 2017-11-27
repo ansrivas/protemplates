@@ -60,14 +60,14 @@ func (p Python) Create(appname string) error {
 	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen)
 
 	//--------------------------------------------------------
-	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appname)
+	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appWithUnderScore)
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[conftestPath] = conftestText
 	pathToContent[testfilePath] = testfileText
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
-	pathToContent[readmePath] = fmt.Sprintf(readmeText, strings.Title(appname), appname, appname)
+	pathToContent[readmePath] = fmt.Sprintf(readmeText, appWithHyphen, appname, appname)
 	pathToContent[manifestPath] = manifestText
 	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
 	//--------------------------------------------------------
