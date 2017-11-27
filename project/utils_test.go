@@ -69,7 +69,7 @@ func Test_SanitizeInput(t *testing.T) {
 		output string
 	}{
 		{"pythoN", "python"},
-		{"test-project", "test_project"},
+		{"test-Project", "test-project"},
 	}
 
 	for _, s := range testStruct {

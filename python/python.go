@@ -11,10 +11,22 @@ import (
 // Python struct is responsible for creating golang projects
 type Python struct{}
 
+// New creates a new implementation for python which is later used to create a project.
+func New(projectName string) project.Project {
+	impl := Python{}
+	return impl
+}
+
 // Create creates a template folder structure for a python project.
 func (p Python) Create(appname string) error {
+
+	appWithHyphen := strings.Replace(appname, "_", "-", -1)
+	appWithUnderScore := strings.Replace(appname, "-", "_", -1)
+
 	basedir := appname
-	appdir := path.Join(appname, appname)
+
+	// Pip has some issues with project module containing `=`, so change it to `_`
+	appdir := path.Join(appname, appWithUnderScore)
 	testdir := path.Join(appname, "tests")
 
 	dirs := []string{basedir, appdir, testdir}
@@ -41,10 +53,11 @@ func (p Python) Create(appname string) error {
 
 	//--------------------------------------------------------
 	conftestPath := path.Join(testdir, "conftest.py")
-	testfilePath := path.Join(testdir, "test_first.py")
+	testfilePath := path.Join(testdir, "test_example_test.py")
 	//--------------------------------------------------------
 
-	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appname, appname)
+	// Pip has some issues with project module containing `=`, so change it to `_`
+	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen)
 
 	//--------------------------------------------------------
 	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appname)
@@ -56,7 +69,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[requirementsPath] = requirementsText
 	pathToContent[readmePath] = fmt.Sprintf(readmeText, strings.Title(appname), appname, appname)
 	pathToContent[manifestPath] = manifestText
-	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appname)
+	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
