@@ -38,6 +38,6 @@ var cmdCreate = &cobra.Command{
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		handleProjectCreation(args[0])
+		createProject(args[0])
 	},
 }

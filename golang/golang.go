@@ -13,6 +13,26 @@ type Golang struct {
 	Username string
 }
 
+// New creates a new implementation for golang which is later used to create a project.
+func New(projectName string) project.Project {
+	var scm, username string
+
+	fmt.Println("Please enter a desired scm eg. github.com or bitbucket.com")
+	fmt.Scanf("%s", &scm)
+
+	fmt.Println("Please enter a username corresponding to your scm eg. github.com/ansrivas, then ansrivas")
+	fmt.Scanf("%s", &username)
+
+	if username == "" || scm == "" {
+		fmt.Println("Username or scm can not be empty")
+		return nil
+	}
+
+	impl := Golang{Scm: scm, Username: username}
+	return impl
+
+}
+
 // Create creates a template folder structure for a golang project.
 func (g Golang) Create(appname string) error {
 

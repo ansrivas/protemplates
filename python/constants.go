@@ -18,8 +18,13 @@ def get_version():
         return re.search(r"""__version__\s+=\s+(['"])(?P<version>.+?)\1""",
                          version_file.read()).group('version')
 
+
 install_requires = ['future']
+
+
 test_requires = ['pytest', 'pytest-sugar', 'pytest-asyncio', 'pytest-cov', ]
+
+
 setup(
     name='%s',
     description="Some description about your project",
@@ -54,18 +59,18 @@ var conftestText = `# !/usr/bin/env python
 
 import pytest
 
+
 @pytest.fixture(scope="function")
 def test_fixture(request):
     """Create a test fixture."""
-
     myvar = 5
 
     def tear_down():
         # clean up here
         pass
     request.addfinalizer(tear_down)
-
-    return myvar`
+    return myvar
+`
 
 var testfileText = `# !/usr/bin/env python
 # -*- coding: utf-8 -*-
@@ -74,8 +79,8 @@ var testfileText = `# !/usr/bin/env python
 
 def test_list_files_older_than(test_fixture):
     """Run a test."""
-
-    assert(5 == test_fixture)`
+    assert(5 == test_fixture)
+`
 
 var initpyText = `__version__ = "0.1.0"`
 
@@ -115,23 +120,22 @@ Install:
 
 	`Test:
 ---
-1. To run the tests:` +
-	"\n\n\t`make test`\n\n" +
+To run the tests:` +
+	"\n\n\tmake test\n\n" +
 
 	`
 Usage:
 ---
 
-....
+###
 
 Example:
 ---
 
-...
+###
 `
 
-var manifestText = `
-include README.md`
+var manifestText = `include README.md`
 
 var devEnvYamlText = `name: %s
 channels:
