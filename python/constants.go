@@ -36,7 +36,7 @@ setup(
     tests_require=test_requires,
     packages=find_packages(),
     zip_safe=False,
-    author="Your name here",
+    author="%s",
     download_url="your project url/archive/{}.tar.gz".format(get_version()),
     classifiers=[
         "Programming Language :: Python :: 2",
@@ -77,7 +77,7 @@ var testfileText = `# !/usr/bin/env python
 """Test modules."""
 
 
-def test_list_files_older_than(test_fixture):
+def test_first(test_fixture):
     """Run a test."""
     assert(5 == test_fixture)
 `

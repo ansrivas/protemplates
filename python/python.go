@@ -2,6 +2,7 @@ package python
 
 import (
 	"fmt"
+	"os/user"
 	"path"
 	"strings"
 
@@ -57,7 +58,12 @@ func (p Python) Create(appname string) error {
 	//--------------------------------------------------------
 
 	// Pip has some issues with project module containing `=`, so change it to `_`
-	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen)
+	author := "Enter your name"
+	curUser, err := user.Current()
+	if err == nil {
+		author = curUser.Username
+	}
+	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen, author)
 
 	//--------------------------------------------------------
 	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appWithUnderScore)
