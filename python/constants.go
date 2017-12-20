@@ -89,19 +89,18 @@ var initpyText = `__version__ = "0.1.0"
 
 var makefileText = `.DEFAULT_GOAL := help
 
-help:          ## Show available options with this Makefile
+help:             ## Show available options with this Makefile
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 .PHONY : test
 test:             ## Run all the tests
-test:
-	python setup.py test
+test:` +
+	"\n\tpython setup.py test\n" +
 
-.PHONY : recreate_pyenv
+	`.PHONY : recreate_pyenv
 recreate_pyenv:   ## Create the python environment. Recreates if the env exists already.
-recreate_pyenv:
-  conda env create --force -f dev_environment.yml
-`
+recreate_pyenv:` +
+	"\n\tconda env create --force -f dev_environment.yml\n"
 
 var requirementsText = `
 `
