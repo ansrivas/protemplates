@@ -45,13 +45,15 @@ setup(
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6", ]
-)`
+)
+`
 
 var setupCfgText = `[aliases]
 test=pytest
 
 [tool:pytest]
-addopts = --verbose -vv --cov-report term-missing --cov %s`
+addopts = --verbose -vv --cov-report term-missing --cov %s
+`
 
 var conftestText = `# !/usr/bin/env python
 # -*- coding: utf-8 -*-
@@ -82,7 +84,8 @@ def test_first(test_fixture):
     assert(5 == test_fixture)
 `
 
-var initpyText = `__version__ = "0.1.0"`
+var initpyText = `__version__ = "0.1.0"
+`
 
 var makefileText = `.DEFAULT_GOAL := help
 
@@ -90,11 +93,18 @@ help:          ## Show available options with this Makefile
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 .PHONY : test
-test:          ## Run all the tests
+test:             ## Run all the tests
 test:
-	python setup.py test`
+	python setup.py test
 
-var requirementsText = ``
+.PHONY : recreate_pyenv
+recreate_pyenv:   ## Create the python environment. Recreates if the env exists already.
+recreate_pyenv:
+  conda env create --force -f dev_environment.yml
+`
+
+var requirementsText = `
+`
 
 var readmeText = `%s:
 ---
@@ -135,7 +145,8 @@ Example:
 ###
 `
 
-var manifestText = `include README.md`
+var manifestText = `include README.md
+`
 
 var devEnvYamlText = `name: %s
 channels:
@@ -143,4 +154,5 @@ channels:
 dependencies:
 - python=3.6.3
 - pip:
-    - future`
+    - future
+`
