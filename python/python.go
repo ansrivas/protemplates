@@ -2,9 +2,11 @@ package python
 
 import (
 	"fmt"
+	"log"
 	"os/user"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/ansrivas/protemplates/project"
 )
@@ -30,13 +32,18 @@ func (p Python) Create(appname string) error {
 	appdir := path.Join(appname, appWithUnderScore)
 	testdir := path.Join(appname, "tests")
 
-	dirs := []string{basedir, appdir, testdir}
+	dirs := []string{appdir, testdir}
+	if project.InitIfGitExist(basedir) {
+		log.Printf("Created repo: [%s] %s", project.GreenText(project.SignSuccess), basedir)
+	} else {
+		dirs = []string{basedir, appdir, testdir}
+	}
+
 	for _, dir := range dirs {
 		project.MustCreateDir(dir)
 	}
 
 	pathToContent := make(map[string]string)
-
 	//--------------------------------------------------------
 	setuppyPath := path.Join(basedir, "setup.py")
 	setupcfgPath := path.Join(basedir, "setup.cfg")
@@ -46,6 +53,7 @@ func (p Python) Create(appname string) error {
 	readmePath := path.Join(basedir, "README.md")
 	manifestPath := path.Join(basedir, "MANIFEST.in")
 	devEnvYamlPath := path.Join(basedir, "dev_environment.yml")
+	travisYmlPath := path.Join(basedir, ".travis.yml")
 	//--------------------------------------------------------
 
 	//--------------------------------------------------------
@@ -76,6 +84,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[readmePath] = fmt.Sprintf(readmeText, appWithHyphen, appname, appname)
 	pathToContent[manifestPath] = manifestText
 	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
+	pathToContent[travisYmlPath] = travisText
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
@@ -83,6 +92,8 @@ func (p Python) Create(appname string) error {
 		if err != nil {
 			return fmt.Errorf("Unable to write file: %s", path)
 		}
+		log.Printf("Created file: [%s] %s", project.GreenText(project.SignSuccess), path)
+		time.Sleep(time.Millisecond * 100)
 	}
 
 	return nil
