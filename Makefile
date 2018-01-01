@@ -20,6 +20,7 @@ clean:         ## Clean the application
 clean:
 	@go clean -i ./...
 	@rm -rf ./{PROJECT_NAME}
+	@rm -rf build/
 
 build: vendor	clean
 	go build -i -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
@@ -44,7 +45,7 @@ crossbuild: ensure
 	&& rm -rf "${PROJECT_NAME}-$(IDENTIFIER)"
 
 release:       ## Create a release build.
-release:
+release:	clean
 	make crossbuild GOOS=linux GOARCH=amd64
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64
