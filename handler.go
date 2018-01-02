@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/ansrivas/protemplates/golang"
+	"github.com/ansrivas/protemplates/licenses"
 	"github.com/ansrivas/protemplates/project"
 	"github.com/ansrivas/protemplates/python"
 )
@@ -29,6 +30,28 @@ func createProject(language string) {
 			break
 		}
 		fmt.Println("Project name can not be empty, please enter a valid project name:")
+	}
+
+	fmt.Println(`Please enter a license type.
+[1] MIT
+[2] Apache2`)
+
+	for {
+		license := ""
+		var licenseInput int
+		fmt.Scanf("%d", &licenseInput)
+		switch licenseInput {
+		case 1:
+			license = licenses.Mit
+		case 2:
+			license = licenses.Apache2
+		default:
+			fmt.Println("Licenses can be either MIT or Apache2 currently")
+		}
+		if license != "" {
+			break
+		}
+		continue
 	}
 
 	var impl project.Project

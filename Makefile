@@ -11,7 +11,7 @@ LDFLAGS="-s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)"
 help:          ## Show available options with this Makefile
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-.PHONY : test crossbuild release
+.PHONY : test crossbuild release build
 test:          ## Run all the tests
 test:
 	chmod +x ./test.sh && ./test.sh
@@ -20,9 +20,8 @@ clean:         ## Clean the application
 clean:
 	@go clean -i ./...
 	@rm -rf ./{PROJECT_NAME}
-	@rm -rf build/
 
-build: vendor	clean
+build: vendor
 	go build -i -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
 
 dep:           ## Go get dep
@@ -37,7 +36,7 @@ endif
 	dep ensure
 	touch vendor
 
-crossbuild: ensure
+crossbuild:
 	mkdir -p build/${PROJECT_NAME}-$(IDENTIFIER)
 	make build FLAGS="-o build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 	cd build \
@@ -45,7 +44,7 @@ crossbuild: ensure
 	&& rm -rf "${PROJECT_NAME}-$(IDENTIFIER)"
 
 release:       ## Create a release build.
-release:	clean
+release:	clean ensure
 	make crossbuild GOOS=linux GOARCH=amd64
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64

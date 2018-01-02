@@ -5,9 +5,11 @@ import (
 	"log"
 	"os/user"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 
+	"github.com/ansrivas/protemplates/licenses"
 	"github.com/ansrivas/protemplates/project"
 )
 
@@ -54,6 +56,7 @@ func (p Python) Create(appname string) error {
 	manifestPath := path.Join(basedir, "MANIFEST.in")
 	devEnvYamlPath := path.Join(basedir, "dev_environment.yml")
 	travisYmlPath := path.Join(basedir, ".travis.yml")
+	licensePath := path.Join(basedir, "LICENSE")
 	//--------------------------------------------------------
 
 	//--------------------------------------------------------
@@ -85,6 +88,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[manifestPath] = manifestText
 	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
 	pathToContent[travisYmlPath] = travisText
+	pathToContent[licensePath] = fmt.Sprintf(licenses.Mit, strconv.Itoa(time.Now().Year()), author)
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
