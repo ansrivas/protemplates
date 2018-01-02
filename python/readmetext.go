@@ -10,7 +10,7 @@ const (
 	tabsthree     = "\t\t\t"
 )
 
-var readmeText = `# %s
+var readmeText = `# {{.appWithHyphen}}
 [![Build Status](https://travis-ci.org/username/%s.svg?branch=master)](https://travis-ci.org/username/%s)
 
 Short Description.
@@ -34,7 +34,7 @@ Short Description.
 * Install in Anaconda3 environment` + newlineone +
 	ticksthree + newlineone +
 	`$ conda env create --force -f dev_environment.yml
-$ source activate %s
+$ source activate {{.appname}}
 $ pip install -e .` + newlineone +
 	ticksthree + newlinesthree +
 	`# Test
@@ -52,4 +52,4 @@ To run the tests:` + newlineone +
 	`$ python examples/simple.py` + newlineone +
 	ticksthree + newlinesthree +
 	"# License" + newlineone +
-	"%s"
+	"{{.license}}"

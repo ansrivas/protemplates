@@ -14,7 +14,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 # Get version without importing, which avoids dependency issues
 def get_version():
-    with open('%s/__init__.py') as version_file:
+    with open('{{.appWithUnderScore}}/__init__.py') as version_file:
         return re.search(r"""__version__\s+=\s+(['"])(?P<version>.+?)\1""",
                          version_file.read()).group('version')
 
@@ -26,7 +26,7 @@ test_requires = ['pytest', 'pytest-sugar', 'pytest-asyncio', 'pytest-cov', ]
 
 
 setup(
-    name='%s',
+    name='{{.appWithHyphen}}',
     description="Some description about your project",
     long_description=long_description,
     version=get_version(),
@@ -36,7 +36,7 @@ setup(
     tests_require=test_requires,
     packages=find_packages(),
     zip_safe=False,
-    author="%s",
+    author="{{.author}}",
     download_url="your project url/archive/{}.tar.gz".format(get_version()),
     classifiers=[
         "Programming Language :: Python :: 2",

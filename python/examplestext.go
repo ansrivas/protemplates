@@ -1,7 +1,7 @@
 package python
 
 var examplesText = `"""Basic functionality."""
-import %s
+import {{.appWithUnderScore}}
 
-print(%s.__version__)
+print({{.appWithUnderScore}}.__version__)
 `

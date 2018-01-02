@@ -4,7 +4,7 @@ var setupCfgText = `[aliases]
 test=pytest
 
 [tool:pytest]
-addopts = --verbose -vv --cov-report term-missing --cov %s
+addopts = --verbose -vv --cov-report term-missing --cov {{.appWithUnderScore}}
 `
 
 var conftestText = `# !/usr/bin/env python
@@ -34,10 +34,10 @@ var testfileText = `# !/usr/bin/env python
 
 def test_init(hello_world):
     """Run a test."""
-    import %s
+    import {{.appWithUnderScore}}
 
     # Test __init__
-    assert hasattr(%s, '__version__')
+    assert hasattr({{.appWithUnderScore}}, '__version__')
 
     # Test pytest fixtures
     assert(hello_world == "Hello World!")
@@ -52,7 +52,7 @@ var requirementsText = `
 var manifestText = `include README.md
 `
 
-var devEnvYamlText = `name: %s
+var devEnvYamlText = `name: {{.appWithHyphen}}
 channels:
   - defaults
 dependencies:

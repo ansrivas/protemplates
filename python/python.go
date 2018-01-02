@@ -20,6 +20,17 @@ type Python struct {
 	author  string
 }
 
+type dict map[string]string
+
+var t = template.New("python")
+
+func parseTemplateString(tpl string, data interface{}) string {
+	var b bytes.Buffer
+	t, _ = t.Parse(tpl)
+	t.Execute(&b, data)
+	return b.String()
+}
+
 // New creates a new implementation for python which is later used to create a project.
 func New(projectName, license, author string) project.Project {
 	impl := Python{license: license,
@@ -29,7 +40,7 @@ func New(projectName, license, author string) project.Project {
 
 // Create creates a template folder structure for a python project.
 func (p Python) Create(appname string) error {
-	t := template.New("python")
+
 	appWithHyphen := strings.Replace(appname, "_", "-", -1)
 	appWithUnderScore := strings.Replace(appname, "-", "_", -1)
 
@@ -53,8 +64,6 @@ func (p Python) Create(appname string) error {
 		project.MustCreateDir(dir)
 	}
 
-	pathToContent := make(map[string]string)
-	//--------------------------------------------------------
 	setuppyPath := path.Join(basedir, "setup.py")
 	setupcfgPath := path.Join(basedir, "setup.cfg")
 	gitignorePath := path.Join(basedir, ".gitignore")
@@ -65,51 +74,46 @@ func (p Python) Create(appname string) error {
 	devEnvYamlPath := path.Join(basedir, "dev_environment.yml")
 	travisYmlPath := path.Join(basedir, ".travis.yml")
 	licensePath := path.Join(basedir, "LICENSE")
-	//--------------------------------------------------------
 
-	//--------------------------------------------------------
 	initpyPath := path.Join(appdir, "__init__.py")
-	//--------------------------------------------------------
 
-	//--------------------------------------------------------
 	conftestPath := path.Join(testdir, "conftest.py")
 	testfilePath := path.Join(testdir, "test_init.py")
-	//--------------------------------------------------------
 
 	examplesPath := path.Join(examplesdir, "simple.py")
 
-	//=================================================================
+	data := dict{
+		"appname":           appname,
+		"appWithUnderScore": appWithUnderScore,
+		"appWithHyphen":     appWithHyphen,
+		"author":            p.author,
+		"year":              strconv.Itoa(time.Now().Year()),
+		"license":           p.license,
+	}
+	parse := func(tpl string) string {
+		return parseTemplateString(tpl, data)
+	}
 
-	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen, p.author)
-
-	//--------------------------------------------------------
-	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appWithUnderScore)
+	pathToContent := make(dict)
+	pathToContent[setuppyPath] = parse(setupyText)
+	pathToContent[setupcfgPath] = parse(setupCfgText)
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[conftestPath] = conftestText
-	pathToContent[testfilePath] = fmt.Sprintf(testfileText, appWithUnderScore, appWithUnderScore)
+	pathToContent[testfilePath] = parse(testfileText)
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
-	pathToContent[readmePath] = fmt.Sprintf(readmeText, appWithHyphen, appname, appname, appname, appname, p.license)
+	pathToContent[readmePath] = parse(readmeText)
 	pathToContent[manifestPath] = manifestText
-	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
+	pathToContent[devEnvYamlPath] = parse(devEnvYamlText)
 	pathToContent[travisYmlPath] = travisText
-	pathToContent[examplesPath] = fmt.Sprintf(examplesText, appWithUnderScore, appWithUnderScore)
-
-	// TODO: (ansrivas) Clean up this mess here, move it to a function may be
-	var tpl bytes.Buffer
-	t, _ = t.Parse(licenses.LicenseMap[p.license])
-	data := map[string]string{"year": strconv.Itoa(time.Now().Year()),
-		"author": p.author,
-	}
-	t.Execute(&tpl, data)
-
-	pathToContent[licensePath] = tpl.String()
-	//--------------------------------------------------------
+	pathToContent[examplesPath] = parse(examplesText)
+	pathToContent[licensePath] = parse(licenses.LicenseMap[p.license])
 
 	for path, content := range pathToContent {
 		err := project.WriteToFile(path, content)
 		if err != nil {
+			log.Printf("Failed file: [%s] %s", project.RedText(project.SignSuccess), path)
 			return fmt.Errorf("Unable to write file: %s", path)
 		}
 		log.Printf("Created file: [%s] %s", project.GreenText(project.SignSuccess), path)
