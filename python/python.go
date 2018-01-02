@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ansrivas/protemplates/licenses"
 	"github.com/ansrivas/protemplates/project"
 )
 
@@ -70,7 +71,7 @@ func (p Python) Create(appname string) error {
 
 	//--------------------------------------------------------
 	conftestPath := path.Join(testdir, "conftest.py")
-	testfilePath := path.Join(testdir, "test_example_test.py")
+	testfilePath := path.Join(testdir, "test_init.py")
 	//--------------------------------------------------------
 
 	examplesPath := path.Join(examplesdir, "simple.py")
@@ -83,15 +84,15 @@ func (p Python) Create(appname string) error {
 	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appWithUnderScore)
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[conftestPath] = conftestText
-	pathToContent[testfilePath] = testfileText
+	pathToContent[testfilePath] = fmt.Sprintf(testfileText, appWithUnderScore, appWithUnderScore)
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
-	pathToContent[readmePath] = fmt.Sprintf(readmeText, appWithHyphen, appname, appname)
+	pathToContent[readmePath] = fmt.Sprintf(readmeText, appWithHyphen, appname, appname, appname, appname, p.license)
 	pathToContent[manifestPath] = manifestText
 	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
 	pathToContent[travisYmlPath] = travisText
-	pathToContent[licensePath] = fmt.Sprintf(p.license, strconv.Itoa(time.Now().Year()), p.author)
+	pathToContent[licensePath] = fmt.Sprintf(licenses.LicenseMap[p.license], strconv.Itoa(time.Now().Year()), p.author)
 	pathToContent[examplesPath] = fmt.Sprintf(examplesText, appWithUnderScore, appWithUnderScore)
 	//--------------------------------------------------------
 

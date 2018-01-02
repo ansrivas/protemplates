@@ -1,7 +1,7 @@
 package licenses
 
-// Mit is the license text
-const Mit = `MIT License
+// mit is the license text
+const mit = `MIT License
 
 Copyright (c) %s %s
 

@@ -1,53 +1,5 @@
 package python
 
-var setupyText = `import re
-from os import path
-from codecs import open  # To use a consistent encoding
-from setuptools import setup, find_packages
-
-here = path.abspath(path.dirname(__file__))
-
-# Get the long description from the relevant file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
-
-
-# Get version without importing, which avoids dependency issues
-def get_version():
-    with open('%s/__init__.py') as version_file:
-        return re.search(r"""__version__\s+=\s+(['"])(?P<version>.+?)\1""",
-                         version_file.read()).group('version')
-
-
-install_requires = ['future']
-
-
-test_requires = ['pytest', 'pytest-sugar', 'pytest-asyncio', 'pytest-cov', ]
-
-
-setup(
-    name='%s',
-    description="Some description about your project",
-    long_description=long_description,
-    version=get_version(),
-    include_package_data=True,
-    install_requires=install_requires,
-    setup_requires=['pytest-runner'],
-    tests_require=test_requires,
-    packages=find_packages(),
-    zip_safe=False,
-    author="%s",
-    download_url="your project url/archive/{}.tar.gz".format(get_version()),
-    classifiers=[
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6", ]
-)
-`
-
 var setupCfgText = `[aliases]
 test=pytest
 
@@ -63,15 +15,16 @@ import pytest
 
 
 @pytest.fixture(scope="function")
-def test_fixture(request):
+def hello_world(request):
     """Create a test fixture."""
-    myvar = 5
+    hw = "Hello World!"
 
     def tear_down():
         # clean up here
         pass
+
     request.addfinalizer(tear_down)
-    return myvar
+    return hw
 `
 
 var testfileText = `# !/usr/bin/env python
@@ -79,69 +32,21 @@ var testfileText = `# !/usr/bin/env python
 """Test modules."""
 
 
-def test_first(test_fixture):
+def test_init(hello_world):
     """Run a test."""
-    assert(5 == test_fixture)
+    import %s
+
+    # Test __init__
+    assert hasattr(%s, '__version__')
+
+    # Test pytest fixtures
+    assert(hello_world == "Hello World!")
 `
 
 var initpyText = `__version__ = "0.1.0"
 `
 
-var makefileText = `.DEFAULT_GOAL := help
-
-help:             ## Show available options with this Makefile
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
-
-.PHONY : test
-test:             ## Run all the tests
-test:` +
-	"\n\tpython setup.py test\n\n" +
-
-	`.PHONY : recreate_pyenv
-recreate_pyenv:   ## Create the python environment. Recreates if the env exists already.
-recreate_pyenv:` +
-	"\n\tconda env create --force -f dev_environment.yml\n"
-
 var requirementsText = `
-`
-
-var readmeText = `%s:
----
-
-This project can be used to ...
-
-Install:
----
-1. Clone the project.
-
-2. Create a virtualenv using venv or virtualenv:` +
-	"\n\n\t```\n" +
-	"\tcd %s\n" +
-	"\t. venv/bin/activate\n" +
-	"\t```\n" +
-
-	`3. If using conda, edit dev-environment.yml file:` +
-
-	"\n\n\t```\n" +
-	"\tconda env create --force -f dev_environment.yml\n" +
-	"\tsource activate %s\n" +
-	"\t```\n\n" +
-
-	`Test:
----
-To run the tests:` +
-	"\n\n\tmake test\n\n" +
-
-	`
-Usage:
----
-
-###
-
-Example:
----
-
-###
 `
 
 var manifestText = `include README.md
@@ -153,12 +58,7 @@ channels:
 dependencies:
 - python=3.6.3
 - pip:
-    - future
-    - twine
-    - m2r
+  - future
+  - twine
+  - m2r
 `
-
-var examplesText = `"""Basic functionality."""
-import %s
-
-print(%s.__version__)`

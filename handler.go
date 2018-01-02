@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
@@ -36,15 +37,15 @@ func createProject(language string) {
 [1] MIT
 [2] Apache2`)
 
+	scanner := bufio.NewScanner(os.Stdin)
 	var license string
 	for {
 		license = ""
-		var licenseInput int
-		fmt.Scanf("%d", &licenseInput)
-		switch licenseInput {
-		case 1:
-			license = licenses.Mit
-		case 2:
+		scanner.Scan()
+		switch scanner.Text() {
+		case "1":
+			license = licenses.MIT
+		case "2":
 			license = licenses.Apache2
 		default:
 			fmt.Println("Licenses can be either MIT or Apache2 currently")
@@ -52,14 +53,13 @@ func createProject(language string) {
 		if license != "" {
 			break
 		}
-		continue
 	}
 
 	fmt.Println(`Please enter author name:`)
-
 	var author string
 	for {
-		fmt.Scanf("%s", &author)
+		scanner.Scan()
+		author = scanner.Text()
 		if author != "" {
 			break
 		}
