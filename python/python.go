@@ -3,22 +3,24 @@ package python
 import (
 	"fmt"
 	"log"
-	"os/user"
 	"path"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/ansrivas/protemplates/licenses"
 	"github.com/ansrivas/protemplates/project"
 )
 
 // Python struct is responsible for creating golang projects
-type Python struct{}
+type Python struct {
+	license string
+	author  string
+}
 
 // New creates a new implementation for python which is later used to create a project.
-func New(projectName string) project.Project {
-	impl := Python{}
+func New(projectName, license, author string) project.Project {
+	impl := Python{license: license,
+		author: author}
 	return impl
 }
 
@@ -69,12 +71,8 @@ func (p Python) Create(appname string) error {
 	//--------------------------------------------------------
 
 	// Pip has some issues with project module containing `=`, so change it to `_`
-	author := "Enter your name"
-	curUser, err := user.Current()
-	if err == nil {
-		author = curUser.Username
-	}
-	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen, author)
+
+	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen, p.author)
 
 	//--------------------------------------------------------
 	pathToContent[setupcfgPath] = fmt.Sprintf(setupCfgText, appWithUnderScore)
@@ -88,7 +86,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[manifestPath] = manifestText
 	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
 	pathToContent[travisYmlPath] = travisText
-	pathToContent[licensePath] = fmt.Sprintf(licenses.Mit, strconv.Itoa(time.Now().Year()), author)
+	pathToContent[licensePath] = fmt.Sprintf(p.license, strconv.Itoa(time.Now().Year()), p.author)
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {

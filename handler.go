@@ -36,8 +36,9 @@ func createProject(language string) {
 [1] MIT
 [2] Apache2`)
 
+	var license string
 	for {
-		license := ""
+		license = ""
 		var licenseInput int
 		fmt.Scanf("%d", &licenseInput)
 		switch licenseInput {
@@ -54,10 +55,21 @@ func createProject(language string) {
 		continue
 	}
 
+	fmt.Println(`Please enter author name:`)
+
+	var author string
+	for {
+		fmt.Scanf("%s", &author)
+		if author != "" {
+			break
+		}
+		fmt.Println("Author name can not be empty, please enter a valid name:")
+	}
+
 	var impl project.Project
 	switch lang {
 	case "python":
-		impl = python.New(projectName)
+		impl = python.New(projectName, license, author)
 	case "go", "golang":
 		impl = golang.New(projectName)
 	default:
