@@ -3,7 +3,7 @@ package licenses
 // mit is the license text
 const mit = `MIT License
 
-Copyright (c) %s %s
+Copyright (c) {{.year}} {{.author}}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

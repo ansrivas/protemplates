@@ -1,11 +1,13 @@
 package python
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"path"
 	"strconv"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/ansrivas/protemplates/licenses"
@@ -27,7 +29,7 @@ func New(projectName, license, author string) project.Project {
 
 // Create creates a template folder structure for a python project.
 func (p Python) Create(appname string) error {
-
+	t := template.New("python")
 	appWithHyphen := strings.Replace(appname, "_", "-", -1)
 	appWithUnderScore := strings.Replace(appname, "-", "_", -1)
 
@@ -92,8 +94,17 @@ func (p Python) Create(appname string) error {
 	pathToContent[manifestPath] = manifestText
 	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
 	pathToContent[travisYmlPath] = travisText
-	pathToContent[licensePath] = fmt.Sprintf(licenses.LicenseMap[p.license], strconv.Itoa(time.Now().Year()), p.author)
 	pathToContent[examplesPath] = fmt.Sprintf(examplesText, appWithUnderScore, appWithUnderScore)
+
+	// TODO: (ansrivas) Clean up this mess here, move it to a function may be
+	var tpl bytes.Buffer
+	t, _ = t.Parse(licenses.LicenseMap[p.license])
+	data := map[string]string{"year": strconv.Itoa(time.Now().Year()),
+		"author": p.author,
+	}
+	t.Execute(&tpl, data)
+
+	pathToContent[licensePath] = tpl.String()
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {
