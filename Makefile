@@ -6,7 +6,7 @@ PROJECT_NAME := protemplates
 CLONE_URL:=github.com/ansrivas/protemplates
 IDENTIFIER= $(VERSION)-$(GOOS)-$(GOARCH)
 BUILD_TIME=$(shell date -u +%FT%T%z)
-LDFLAGS="-s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)"
+LDFLAGS='-extldflags "-static" -s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)'
 
 help:          ## Show available options with this Makefile
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -21,8 +21,11 @@ clean:
 	@go clean -i ./...
 	@rm -rf ./{PROJECT_NAME}
 
+# `-v` so warnings from the linker aren't suppressed.
+# `-a` so dependencies are rebuilt (they may have been dynamically
+# linked).
 build: vendor
-	go build -i -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
+	CC=/usr/local/musl/bin/musl-gcc go build -i -a -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
 
 dep:           ## Go get dep
 dep:
