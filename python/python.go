@@ -35,12 +35,15 @@ func (p Python) Create(appname string) error {
 	// Pip has some issues with project module containing `=`, so change it to `_`
 	appdir := path.Join(appname, appWithUnderScore)
 	testdir := path.Join(appname, "tests")
+	examplesdir := path.Join(appname, "examples")
 
-	dirs := []string{appdir, testdir}
+	dirs := []string{appdir, testdir, examplesdir}
+	// creates the basedir and initializes an empty repo
 	if project.InitIfGitExist(basedir) {
 		log.Printf("Created repo: [%s] %s", project.GreenText(project.SignSuccess), basedir)
 	} else {
-		dirs = []string{basedir, appdir, testdir}
+		// if git is not present, create basedir in the beginning, yourself
+		dirs = append([]string{basedir}, dirs...)
 	}
 
 	for _, dir := range dirs {
@@ -70,7 +73,9 @@ func (p Python) Create(appname string) error {
 	testfilePath := path.Join(testdir, "test_example_test.py")
 	//--------------------------------------------------------
 
-	// Pip has some issues with project module containing `=`, so change it to `_`
+	examplesPath := path.Join(examplesdir, "simple.py")
+
+	//=================================================================
 
 	pathToContent[setuppyPath] = fmt.Sprintf(setupyText, appWithUnderScore, appWithHyphen, p.author)
 
@@ -87,6 +92,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[devEnvYamlPath] = fmt.Sprintf(devEnvYamlText, appWithHyphen)
 	pathToContent[travisYmlPath] = travisText
 	pathToContent[licensePath] = fmt.Sprintf(p.license, strconv.Itoa(time.Now().Year()), p.author)
+	pathToContent[examplesPath] = fmt.Sprintf(examplesText, appWithUnderScore, appWithUnderScore)
 	//--------------------------------------------------------
 
 	for path, content := range pathToContent {

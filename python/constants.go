@@ -95,7 +95,7 @@ help:             ## Show available options with this Makefile
 .PHONY : test
 test:             ## Run all the tests
 test:` +
-	"\n\tpython setup.py test\n" +
+	"\n\tpython setup.py test\n\n" +
 
 	`.PHONY : recreate_pyenv
 recreate_pyenv:   ## Create the python environment. Recreates if the env exists already.
@@ -154,4 +154,11 @@ dependencies:
 - python=3.6.3
 - pip:
     - future
+    - twine
+    - m2r
 `
+
+var examplesText = `"""Basic functionality."""
+import %s
+
+print(%s.__version__)`
