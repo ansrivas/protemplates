@@ -14,10 +14,23 @@ import (
 	"github.com/ansrivas/protemplates/project"
 )
 
-// Python struct is responsible for creating golang projects
+// // Python struct is responsible for creating python projects
+// type Python struct {
+// 	// license represents a string like "MIT" or "Apache2"
+// 	license string
+// 	// author represents the full name of author. For eg. Tova Lanre
+// 	author string
+// 	// authoremail represents the email of the author in case anyone needs to contact
+// 	authoremail string
+// 	// scm is source code management, for eg. github.com, gitlab.com, bitbucket.com
+// 	scm string
+// 	// scmUserName represents a username, for eg. github.com/spf13 => then spf13
+// 	scmUserName string
+// }
+
+// Python struct is responsible for creating python projects
 type Python struct {
-	license string
-	author  string
+	project.Info
 }
 
 type dict map[string]string
@@ -32,10 +45,17 @@ func parseTemplateString(tpl string, data interface{}) string {
 }
 
 // New creates a new implementation for python which is later used to create a project.
-func New(projectName, license, author string) project.Project {
-	impl := Python{license: license,
-		author: author}
-	return impl
+func New(projectName, license, author, authoremail, scm, scmusername string) project.Project {
+
+	return Python{
+		project.Info{
+			License:     license,
+			Author:      author,
+			Authoremail: authoremail,
+			Scm:         scm,
+			ScmUserName: scmusername,
+		},
+	}
 }
 
 // Create creates a template folder structure for a python project.
@@ -86,9 +106,12 @@ func (p Python) Create(appname string) error {
 		"appname":           appname,
 		"appWithUnderScore": appWithUnderScore,
 		"appWithHyphen":     appWithHyphen,
-		"author":            p.author,
+		"author":            p.Author,
 		"year":              strconv.Itoa(time.Now().Year()),
-		"license":           p.license,
+		"license":           p.License,
+		"authoremail":       p.Authoremail,
+		"scm":               p.Scm,
+		"scmusername":       p.ScmUserName,
 	}
 	parse := func(tpl string) string {
 		return parseTemplateString(tpl, data)
@@ -108,7 +131,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[devEnvYamlPath] = parse(devEnvYamlText)
 	pathToContent[travisYmlPath] = travisText
 	pathToContent[examplesPath] = parse(examplesText)
-	pathToContent[licensePath] = parse(licenses.LicenseMap[p.license])
+	pathToContent[licensePath] = parse(licenses.LicenseMap[p.License])
 
 	for path, content := range pathToContent {
 		err := project.WriteToFile(path, content)

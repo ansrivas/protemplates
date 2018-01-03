@@ -37,7 +37,8 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     author="{{.author}}",
-    download_url="your project url/archive/{}.tar.gz".format(get_version()),
+    author_email = "{{.authoremail}}",
+    download_url="{{.scm}}/{{.scmusername}}/{}.tar.gz".format(get_version()),
     classifiers=[
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",

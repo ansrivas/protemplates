@@ -20,6 +20,40 @@ func mustCreateProject(impl project.Project, projectName string) {
 	fmt.Printf("Successfully created the project %s in current directory\n", projectName)
 }
 
+// userAgrees checks if user agrees to a given query
+func userAgrees(msg string) bool {
+	var input string
+
+	fmt.Printf("%s [y/N]: ", msg)
+	for {
+		fmt.Scanf("%s", &input)
+		switch input {
+		case "y":
+			return true
+		case "N":
+			return false
+		default:
+			fmt.Println("Valid responses are only [y/N]")
+			continue
+		}
+	}
+}
+
+func readInput(msg string) string {
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Println(msg)
+	var input string
+	for {
+		scanner.Scan()
+		input = scanner.Text()
+		if input == "" && !userAgrees("Continuing with empty input") {
+			continue
+		}
+		break
+	}
+	return input
+}
+
 func createProject(language string) {
 	lang := project.SanitizeInput(language)
 
@@ -37,8 +71,9 @@ func createProject(language string) {
 [1] MIT
 [2] Apache2`)
 
-	scanner := bufio.NewScanner(os.Stdin)
 	var license string
+	scanner := bufio.NewScanner(os.Stdin)
+
 	for {
 		license = ""
 		scanner.Scan()
@@ -55,21 +90,15 @@ func createProject(language string) {
 		}
 	}
 
-	fmt.Println(`Please enter author name:`)
-	var author string
-	for {
-		scanner.Scan()
-		author = scanner.Text()
-		if author != "" {
-			break
-		}
-		fmt.Println("Author name can not be empty, please enter a valid name:")
-	}
+	author := readInput("Please enter author name: for eg. Lovan Vivan")
+	authoremail := readInput("Please enter author email:")
+	scm := readInput("Please enter your scm for eg. github.com, bitbucket.com")
+	scmusername := readInput("Please enter a username corresponding to your scm eg. github.com/ansrivas, then ansrivas")
 
 	var impl project.Project
 	switch lang {
 	case "python":
-		impl = python.New(projectName, license, author)
+		impl = python.New(projectName, license, author, authoremail, scm, scmusername)
 	case "go", "golang":
 		impl = golang.New(projectName)
 	default:

@@ -58,6 +58,7 @@ channels:
 dependencies:
 - python=3.6.3
 - pip:
+  - cython
   - future
   - twine
   - m2r
