@@ -28,9 +28,10 @@ func New(projectName string) project.Project {
 		return nil
 	}
 
-	impl := Golang{Scm: scm, Username: username}
-	return impl
-
+	return Golang{
+		Scm:      scm,
+		Username: username,
+	}
 }
 
 // Create creates a template folder structure for a golang project.
