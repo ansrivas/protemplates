@@ -35,17 +35,13 @@ func New(projectName, license, author, authoremail, scm, scmusername string) pro
 // Create creates a template folder structure for a golang project.
 func (g Golang) Create(appname string) error {
 
-	// basedir := "src"
-	// srcdir := path.Join(appname, basedir, g.Scm, g.ScmUserName, appname)
 	srcdir := appname
 
-	//order matters.
-	// dirs := []string{appname, basedir, g.Scm, g.ScmUserName, appname}
-	dirs := []string{appname}
-	temp := ""
-	for _, dir := range dirs {
-		temp = path.Join(temp, dir)
-		project.MustCreateDir(temp)
+	if project.InitIfGitExist(srcdir) {
+		log.Printf("Created repo: [%s] %s", project.GreenText(project.SignSuccess), srcdir)
+	} else {
+		// if git is not present, create basedir in the beginning, yourself
+		project.MustCreateDir(srcdir)
 	}
 
 	makefilePath := path.Join(srcdir, "Makefile")
