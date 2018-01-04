@@ -1,9 +1,11 @@
 package project
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"strings"
+	"text/template"
 )
 
 // CreateDir create a directory with a given name, only if it doesn't exist.
@@ -32,6 +34,14 @@ func WriteToFile(filepath string, data string) error {
 	f.WriteString(data)
 	f.Sync()
 	return nil
+}
+
+// ParseTemplateString parses a string-template, fills in data and returns corresponding string
+func ParseTemplateString(tpl string, t *template.Template, data interface{}) string {
+	var b bytes.Buffer
+	t, _ = t.Parse(tpl)
+	t.Execute(&b, data)
+	return b.String()
 }
 
 // SanitizeInput accepts a language string, checks if its allowed.

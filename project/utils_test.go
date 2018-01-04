@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"text/template"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -89,4 +90,14 @@ func Test_Create(t *testing.T) {
 	assert := assert.New(t)
 	err := Create(TestLanguage{}, "myapp")
 	assert.Nil(err, "Should successfully test creation of projects, using interface")
+}
+
+func Test_ParseTemplateString(t *testing.T) {
+	assert := assert.New(t)
+	tp := template.New("test")
+	tplstr := `{{.input}}`
+	expected := `testInput`
+	actual := ParseTemplateString(tplstr, tp, map[string]string{"input": "testInput"})
+
+	assert.Equal(expected, actual, "Template string parsing should work as expected.")
 }

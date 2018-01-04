@@ -7,3 +7,6 @@ type Project interface {
 	// a directory structure for a given language eg. Python.
 	Create(appname string) error
 }
+
+// Dict is a dict of string keys to string values
+type Dict map[string]string

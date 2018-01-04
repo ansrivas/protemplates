@@ -6,12 +6,12 @@ PROJECT_NAME := protemplates
 CLONE_URL:=github.com/ansrivas/protemplates
 IDENTIFIER= $(VERSION)-$(GOOS)-$(GOARCH)
 BUILD_TIME=$(shell date -u +%FT%T%z)
-LDFLAGS="-s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)"
+LDFLAGS='-extldflags "-static" -s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)'
 
 help:          ## Show available options with this Makefile
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-.PHONY : test crossbuild release
+.PHONY : test crossbuild release build
 test:          ## Run all the tests
 test:
 	chmod +x ./test.sh && ./test.sh
@@ -21,8 +21,19 @@ clean:
 	@go clean -i ./...
 	@rm -rf ./{PROJECT_NAME}
 
-build: vendor	clean
-	go build -i -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
+# `-v` so warnings from the linker aren't suppressed.
+# `-a` so dependencies are rebuilt (they may have been dynamically
+# linked).
+build: vendor
+	CC=/usr/local/musl/bin/musl-gcc go build -i -a -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
+
+install_muslc: ## Install muslc compiler
+install_muslc:
+	curl --silent --location http://www.musl-libc.org/releases/musl-1.1.18.tar.gz | tar -xz && \
+  cd musl-1.1.18 && \
+	./configure && \
+	make && \
+	sudo make install
 
 dep:           ## Go get dep
 dep:
@@ -36,7 +47,7 @@ endif
 	dep ensure
 	touch vendor
 
-crossbuild: ensure
+crossbuild:
 	mkdir -p build/${PROJECT_NAME}-$(IDENTIFIER)
 	make build FLAGS="-o build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 	cd build \
@@ -44,7 +55,7 @@ crossbuild: ensure
 	&& rm -rf "${PROJECT_NAME}-$(IDENTIFIER)"
 
 release:       ## Create a release build.
-release:
+release:	clean ensure
 	make crossbuild GOOS=linux GOARCH=amd64
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64
