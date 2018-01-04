@@ -2,6 +2,7 @@ package golang
 
 import (
 	"fmt"
+	"log"
 	"path"
 	"strconv"
 	"text/template"
@@ -78,8 +79,11 @@ func (g Golang) Create(appname string) error {
 	for path, content := range pathToContent {
 		err := project.WriteToFile(path, content)
 		if err != nil {
+			log.Printf("Failed file: [%s] %s", project.RedText(project.SignSuccess), path)
 			return fmt.Errorf("Unable to write file: %s", path)
 		}
+		log.Printf("Created file: [%s] %s", project.GreenText(project.SignSuccess), path)
+		time.Sleep(time.Millisecond * 100)
 	}
 
 	return nil
