@@ -13,20 +13,6 @@ import (
 	"github.com/ansrivas/protemplates/project"
 )
 
-// // Python struct is responsible for creating python projects
-// type Python struct {
-// 	// license represents a string like "MIT" or "Apache2"
-// 	license string
-// 	// author represents the full name of author. For eg. Tova Lanre
-// 	author string
-// 	// authoremail represents the email of the author in case anyone needs to contact
-// 	authoremail string
-// 	// scm is source code management, for eg. github.com, gitlab.com, bitbucket.com
-// 	scm string
-// 	// scmUserName represents a username, for eg. github.com/spf13 => then spf13
-// 	scmUserName string
-// }
-
 // Python struct is responsible for creating python projects
 type Python struct {
 	project.Info
