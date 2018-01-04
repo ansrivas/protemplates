@@ -1,19 +1,19 @@
 package golang
 
-var makefileTextt = `.DEFAULT_GOAL := help
+var makefileText = `.DEFAULT_GOAL := help
 
 DEP= $(shell command -v dep 2>/dev/null)
 VERSION=$(shell git describe --always --long)
-PROJECT_NAME := %s
-CLONE_URL:=github.com/%s/%s
+PROJECT_NAME := {{.appname}}
+CLONE_URL:={{.scm}}/{{.scmusername}}/{{.appname}}
 IDENTIFIER= $(VERSION)-$(GOOS)-$(GOARCH)
 BUILD_TIME=$(shell date -u +%FT%T%z)
-LDFLAGS="-s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)"
+LDFLAGS='-extldflags "-static" -s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)'
 
 help:          ## Show available options with this Makefile
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-.PHONY : test crossbuild release
+.PHONY : test crossbuild release build
 test:          ## Run all the tests
 test:
 	chmod +x ./test.sh && ./test.sh
@@ -23,8 +23,19 @@ clean:
 	@go clean -i ./...
 	@rm -rf ./{PROJECT_NAME}
 
-build: vendor	clean
-	go build -i -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
+# -v so warnings from the linker aren't suppressed.
+# -a so dependencies are rebuilt (they may have been dynamically
+# linked).
+build: vendor
+	CC=/usr/local/musl/bin/musl-gcc go build -i -a -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
+
+install_muslc: ## Install muslc compiler
+install_muslc:
+	curl --silent --location http://www.musl-libc.org/releases/musl-1.1.18.tar.gz | tar -xz && \
+  cd musl-1.1.18 && \
+	./configure && \
+	make && \
+	sudo make install
 
 dep:           ## Go get dep
 dep:
@@ -38,7 +49,7 @@ endif
 	dep ensure
 	touch vendor
 
-crossbuild: ensure
+crossbuild:
 	mkdir -p build/${PROJECT_NAME}-$(IDENTIFIER)
 	make build FLAGS="-o build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 	cd build \
@@ -46,10 +57,11 @@ crossbuild: ensure
 	&& rm -rf "${PROJECT_NAME}-$(IDENTIFIER)"
 
 release:       ## Create a release build.
-release:
+release:	clean ensure
 	make crossbuild GOOS=linux GOARCH=amd64
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64
+	make crossbuild GOOS=windows GOARCH=amd64
 
 
 bench:	       ## Benchmark the code.
@@ -63,49 +75,5 @@ prof:	bench
 prof_svg:      ## Run the profiler and generate image.
 prof_svg:	clean	bench
 	@echo "Do you have graphviz installed? sudo apt-get install graphviz."
-	@go tool pprof -svg bench.test cpu.prof > cpu.svg`
-
-var readmeText = `{{.appname}}:
-	---
-
-	This project can be used to ...
-
-	Install:
-	---
-	Clone the project and run ...
-
-	Test:
-	---
-	To run the tests: ...
-
-
-	Usage:
-	---
-
-	....
-
-	Example:
-	---
-
-	...
-	`
-
-var mainText = `package main
-
-import (
-	"fmt"
-)
-
-var (
-	// BuildTime gets populated during the build proces
-	BuildTime = ""
-
-	//Version gets populated during the build process
-	Version = ""
-)
-
-
-func main() {
-	fmt.Printf("Current version is: %s and buildtime is: %s\n", Version, BuildTime)
-}
+	@go tool pprof -svg bench.test cpu.prof > cpu.svg
 `

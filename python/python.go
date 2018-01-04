@@ -1,7 +1,6 @@
 package python
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 	"path"
@@ -33,16 +32,7 @@ type Python struct {
 	project.Info
 }
 
-type dict map[string]string
-
 var t = template.New("python")
-
-func parseTemplateString(tpl string, data interface{}) string {
-	var b bytes.Buffer
-	t, _ = t.Parse(tpl)
-	t.Execute(&b, data)
-	return b.String()
-}
 
 // New creates a new implementation for python which is later used to create a project.
 func New(projectName, license, author, authoremail, scm, scmusername string) project.Project {
@@ -102,7 +92,7 @@ func (p Python) Create(appname string) error {
 
 	examplesPath := path.Join(examplesdir, "simple.py")
 
-	data := dict{
+	data := project.Dict{
 		"appname":           appname,
 		"appWithUnderScore": appWithUnderScore,
 		"appWithHyphen":     appWithHyphen,
@@ -114,10 +104,10 @@ func (p Python) Create(appname string) error {
 		"scmusername":       p.ScmUserName,
 	}
 	parse := func(tpl string) string {
-		return parseTemplateString(tpl, data)
+		return project.ParseTemplateString(tpl, t, data)
 	}
 
-	pathToContent := make(dict)
+	pathToContent := make(project.Dict)
 	pathToContent[setuppyPath] = parse(setupyText)
 	pathToContent[setupcfgPath] = parse(setupCfgText)
 	pathToContent[gitignorePath] = gitignoreText

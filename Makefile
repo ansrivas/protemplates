@@ -27,6 +27,14 @@ clean:
 build: vendor
 	CC=/usr/local/musl/bin/musl-gcc go build -i -a -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
 
+install_muslc: ## Install muslc compiler
+install_muslc:
+	curl --silent --location http://www.musl-libc.org/releases/musl-1.1.18.tar.gz | tar -xz && \
+  cd musl-1.1.18 && \
+	./configure && \
+	make && \
+	sudo make install
+
 dep:           ## Go get dep
 dep:
 	go get -u github.com/golang/dep/cmd/dep

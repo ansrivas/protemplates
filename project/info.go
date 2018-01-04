@@ -1,5 +1,6 @@
 package project
 
+// Info represents bunch of information associated with a project
 type Info struct {
 	// License represents a string like "MIT" or "Apache2"
 	License string

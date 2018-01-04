@@ -100,7 +100,7 @@ func createProject(language string) {
 	case "python":
 		impl = python.New(projectName, license, author, authoremail, scm, scmusername)
 	case "go", "golang":
-		impl = golang.New(projectName)
+		impl = golang.New(projectName, license, author, authoremail, scm, scmusername)
 	default:
 		fmt.Printf("\033[31mException: Language %s is currently not supported.\033[39m\n\n", language)
 		os.Exit(1)
