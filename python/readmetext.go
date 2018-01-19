@@ -25,7 +25,7 @@ Short Description.
 
 ### pip` + newlineone +
 	ticksthree + newlineone +
-	`pip install %s` + newlineone +
+	`pip install {{.appWithHyphen}}` + newlineone +
 	ticksthree + newlinesthree +
 
 	`### Development Installation
