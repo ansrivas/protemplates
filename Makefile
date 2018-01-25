@@ -23,7 +23,6 @@ clean:
 	@rm -rf ./$(PROJECT_NAME)
 
 build: vendor	clean
-	# go build -i -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
 	xgo -go 1.9.2 -out=$(FLAGS) -ldflags=$(LDFLAGS) -targets='${GOOS}/${GOARCH}' .
 
 dep:           ## Go get dep
@@ -41,7 +40,6 @@ endif
 
 crossbuild:
 	mkdir -p build/${PROJECT_NAME}-$(IDENTIFIER)
-	# make build FLAGS="-o build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 	make build FLAGS="build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 	cd build \
 	&& tar cvzf "${PROJECT_NAME}-$(IDENTIFIER).tgz" "${PROJECT_NAME}-$(IDENTIFIER)" \
