@@ -52,6 +52,7 @@ release:	ensure	clean
 	make crossbuild GOOS=linux GOARCH=amd64
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64
+	make crossbuild GOOS=windows GOARCH=amd64
 
 
 bench:	       ## Benchmark the code.
