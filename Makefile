@@ -12,7 +12,7 @@ LDFLAGS='-extldflags "-static" -s -w -X main.Version=$(VERSION) -X main.BuildTim
 help:          ## Show available options with this Makefile
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-.PHONY : test crossbuild release
+.PHONY : test crossbuild release build clean
 test:          ## Run all the tests
 test:	clean
 	chmod +x ./test.sh && ./test.sh
@@ -21,27 +21,33 @@ clean:         ## Clean the application
 clean:
 	@go clean -i ./...
 	@rm -rf ./$(PROJECT_NAME)
+	@rm -rf build/*
 
-build: vendor	clean
-	# go build -i -v -ldflags $(LDFLAGS) $(FLAGS) $(CLONE_URL)
+build: vendor
 	xgo -go 1.9.2 -out=$(FLAGS) -ldflags=$(LDFLAGS) -targets='${GOOS}/${GOARCH}' .
 
 dep:           ## Go get dep
 dep:
 	go get -u github.com/golang/dep/cmd/dep
+
+xgo:           ## Go get XGO
+xgo:
 	go get -u github.com/karalabe/xgo
 
 ensure:        ## Run dep ensure.
 ensure:
 ifndef DEP
-	make dep
+  make dep
 endif
 	dep ensure
 	touch vendor
 
+ifndef XGO
+	make xgo
+endif
+
 crossbuild:
 	mkdir -p build/${PROJECT_NAME}-$(IDENTIFIER)
-	# make build FLAGS="-o build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 	make build FLAGS="build/${PROJECT_NAME}-$(IDENTIFIER)/${PROJECT_NAME}"
 	cd build \
 	&& tar cvzf "${PROJECT_NAME}-$(IDENTIFIER).tgz" "${PROJECT_NAME}-$(IDENTIFIER)" \
