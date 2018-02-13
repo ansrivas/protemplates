@@ -21,6 +21,7 @@ clean:         ## Clean the application
 clean:
 	@go clean -i ./...
 	@rm -rf ./$(PROJECT_NAME)
+	@rm -rf build
 
 build: vendor	clean
 	xgo -go 1.9.2 -out=$(FLAGS) -ldflags=$(LDFLAGS) -targets='${GOOS}/${GOARCH}' .
