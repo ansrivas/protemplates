@@ -1,6 +1,8 @@
 package project
 
 import (
+	"fmt"
+	"os"
 	"os/exec"
 )
 
@@ -10,6 +12,11 @@ func InitIfGitExist(projectdir string) bool {
 	if err != nil {
 		return false
 	}
+	// Check if directory already exists. Panic if it is already there
+	if _, err = os.Stat(projectdir); err == nil {
+		panic(fmt.Sprintf("Directory: %s already exists!!", projectdir))
+	}
+
 	cmd := exec.Command("git", "init", projectdir)
 	err = cmd.Run()
 	if err != nil {
