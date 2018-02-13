@@ -32,22 +32,22 @@ build: vendor
 
 dep:           ## Go get dep
 dep:
-        go get -u github.com/golang/dep/cmd/dep
+	go get -u github.com/golang/dep/cmd/dep
 
 xgo:           ## Go get XGO
 xgo:
-        go get -u github.com/karalabe/xgo
+	go get -u github.com/karalabe/xgo
 
 ensure:        ## Run dep ensure.
 ensure:
 ifndef DEP
-        make dep
+	make dep
 endif
-        dep ensure
-        touch vendor
+	dep ensure
+	touch vendor
 
 ifndef XGO
-       make xgo
+	make xgo
 endif
 
 crossbuild:

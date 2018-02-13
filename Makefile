@@ -40,7 +40,7 @@ ifndef DEP
   make dep
 endif
 	dep ensure
-  touch vendor
+	touch vendor
 
 ifndef XGO
 	make xgo
