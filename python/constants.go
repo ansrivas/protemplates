@@ -58,6 +58,9 @@ channels:
 dependencies:
 - python=3.6.3
 - pip:
+  - pylama
+  - autopep8
+  - yapf
   - cython
   - future
   - twine
