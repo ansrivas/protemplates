@@ -24,7 +24,7 @@ clean:
 	@rm -rf build/*
 
 build: vendor
-	xgo -go 1.9.2 -out=$(FLAGS) -ldflags=$(LDFLAGS) -targets='${GOOS}/${GOARCH}' .
+	xgo -go 1.10.x -out=$(FLAGS) -ldflags=$(LDFLAGS) -targets='${GOOS}/${GOARCH}' .
 
 dep:           ## Go get dep
 dep:
