@@ -68,6 +68,7 @@ func (p Python) Create(appname string) error {
 	readmePath := path.Join(basedir, "README.md")
 	manifestPath := path.Join(basedir, "MANIFEST.in")
 	devEnvYamlPath := path.Join(basedir, "dev_environment.yml")
+	activateEnvPath := path.Join(basedir, "activate-env.sh")
 	travisYmlPath := path.Join(basedir, ".travis.yml")
 	licensePath := path.Join(basedir, "LICENSE")
 
@@ -102,9 +103,10 @@ func (p Python) Create(appname string) error {
 	pathToContent[initpyPath] = initpyText
 	pathToContent[makefilePath] = makefileText
 	pathToContent[requirementsPath] = requirementsText
-	pathToContent[readmePath] = parse(readmeText)
+	pathToContent[readmePath] = parse(readmeText())
 	pathToContent[manifestPath] = manifestText
 	pathToContent[devEnvYamlPath] = parse(devEnvYamlText)
+	pathToContent[activateEnvPath] = parse(activateEnvText)
 	pathToContent[travisYmlPath] = travisText
 	pathToContent[examplesPath] = parse(examplesText)
 	pathToContent[licensePath] = parse(licenses.LicenseMap[p.License])
