@@ -54,11 +54,11 @@ var requirementsText = `
 var manifestText = `include README.md
 `
 
-var devEnvYamlText = `name: {{.appWithHyphen}}
+var devEnvYamlText = `name: {{.appWithHyphen}}-env
 channels:
   - defaults
 dependencies:
-- python=3.6.3
+- python=3.6.4
 - pip:
   - pylama
   - autopep8
