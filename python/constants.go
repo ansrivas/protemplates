@@ -1,6 +1,6 @@
 package python
 
-var activateEnvText = `source activate {{.appWithHyphen}}`
+var activateEnvText = `source activate {{.appWithHyphen}}-env`
 
 var setupCfgText = `[aliases]
 test=pytest
