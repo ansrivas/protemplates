@@ -101,7 +101,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[conftestPath] = conftestText
 	pathToContent[testfilePath] = parse(testfileText)
 	pathToContent[initpyPath] = initpyText
-	pathToContent[makefilePath] = makefileText
+	pathToContent[makefilePath] = parse(makefileText)
 	pathToContent[requirementsPath] = requirementsText
 	pathToContent[readmePath] = parse(readmeText())
 	pathToContent[manifestPath] = manifestText
