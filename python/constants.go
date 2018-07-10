@@ -7,6 +7,13 @@ test=pytest
 
 [tool:pytest]
 addopts = --verbose -vv --cov-report term-missing --cov {{.appWithUnderScore}}
+
+[pep8]
+max-line-length=119
+
+[flake8]
+ignore = N801,N802,N803,W503,E12
+max-line-length=119
 `
 
 var conftestText = `# !/usr/bin/env python
@@ -58,9 +65,9 @@ var devEnvYamlText = `name: {{.appWithHyphen}}-env
 channels:
   - defaults
 dependencies:
-- python=3.6.4
+- python=3.6.5
 - pip:
-  - pylama
+  - flake8
   - autopep8
   - yapf
   - cython

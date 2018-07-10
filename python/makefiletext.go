@@ -31,4 +31,9 @@ upload_pypi:      ## Build and upload distribution to pypi server
 upload_pypi: readme_to_rst
 	python setup.py bdist_wheel --dist-dir dist && \
 	twine upload --skip-existing --repository testpypi dist/*
+
+.PHONY : lint
+lint:             ## Run flake8 linter
+lint:
+	flake8 {{.appWithUnderScore}}
 `
