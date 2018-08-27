@@ -23,19 +23,23 @@
   branch = "master"
   name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "b3426bbac13d7110c4d8fce456ea0012f79f3b8b"
+  revision = "a114f312e075f65bf30d6d9a1430113f857e543b"
 
 [[projects]]
   name = "github.com/spf13/pflag"
   packages = ["."]
-  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
-  version = "v1.0.0"
+  revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
+  version = "v1.0.1"
 
 [[projects]]
   name = "github.com/stretchr/testify"
-  packages = ["assert","require","suite"]
-  revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
-  version = "v1.1.4"
+  packages = [
+    "assert",
+    "require",
+    "suite"
+  ]
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [solve-meta]
   analyzer-name = "dep"

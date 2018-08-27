@@ -1,9 +1,17 @@
 # protemplates
 
+<p>
+  <a href="https://github.com/ansrivas/protemplates/releases">
+    <img src="https://img.shields.io/github/tag/ansrivas/protemplates.svg?style=flat">
+  </a>
+  <a href="https://travis-ci.org/ansrivas/protemplates">
+    <img src="https://travis-ci.org/ansrivas/protemplates.svg?branch=master">
+  </a>
+</p>
+
 This creates a simple project structure for different projects. ( similar to Cargo from rust )
 
 ---
-[![Build Status](https://travis-ci.org/ansrivas/protemplates.svg?branch=master)](https://travis-ci.org/ansrivas/protemplates)
 
 Usage:
 
