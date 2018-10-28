@@ -9,6 +9,13 @@ addopts = --verbose -vv --cov-report term-missing --cov {{.appWithUnderScore}}
 [pep8]
 max-line-length=120
 
+[isort]
+line_length = 120
+skip = __init__.py, setup.py
+indent = '    '
+multi_line_output = 0
+length_sort = 0
+
 [flake8]
 ignore = D203
 exclude =
