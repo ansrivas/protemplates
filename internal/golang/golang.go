@@ -8,8 +8,8 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/ansrivas/protemplates/licenses"
-	"github.com/ansrivas/protemplates/project"
+	"github.com/ansrivas/protemplates/internal/licenses"
+	"github.com/ansrivas/protemplates/internal/project"
 )
 
 // Golang struct is responsible for handling golang projects

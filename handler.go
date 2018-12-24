@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ansrivas/protemplates/golang"
-	"github.com/ansrivas/protemplates/licenses"
-	"github.com/ansrivas/protemplates/project"
-	"github.com/ansrivas/protemplates/python"
+	"github.com/ansrivas/protemplates/internal/golang"
+	"github.com/ansrivas/protemplates/internal/licenses"
+	"github.com/ansrivas/protemplates/internal/project"
+	"github.com/ansrivas/protemplates/internal/python"
 )
 
 // mustCreateProject tries to create a project and panics if something fails.
