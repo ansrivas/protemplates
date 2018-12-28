@@ -71,6 +71,7 @@ func (p Python) Create(appname string) error {
 	activateEnvPath := path.Join(basedir, "activate-env.sh")
 	travisYmlPath := path.Join(basedir, ".travis.yml")
 	licensePath := path.Join(basedir, "LICENSE")
+	changelogPath := path.Join(basedir, "CHANGELOG.md")
 
 	initpyPath := path.Join(appdir, "__init__.py")
 
@@ -110,6 +111,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[travisYmlPath] = travisText
 	pathToContent[examplesPath] = parse(examplesText)
 	pathToContent[licensePath] = parse(licenses.LicenseMap[p.License])
+	pathToContent[changelogPath] = changelogText
 
 	for path, content := range pathToContent {
 		err := project.WriteToFile(path, content)

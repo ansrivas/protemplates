@@ -1,6 +1,5 @@
 .DEFAULT_GOAL := help
 
-DEP= $(shell command -v dep 2>/dev/null)
 VERSION=$(shell git describe --always --long)
 PROJECT_NAME := protemplates
 CLONE_URL:=gitlab.com/ansrivas/$(PROJECT_NAME)
@@ -10,41 +9,22 @@ LDFLAGS='-extldflags "-static" -s -w -X main.Version=$(VERSION) -X main.BuildTim
 # LDFLAGS='-linkmode external -s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME)'
 
 help:          ## Show available options with this Makefile
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+	@grep -F -h "##" $(MAKEFILE_LIST) | grep -v grep | awk 'BEGIN { FS = ":.*?##" }; { printf "%-18s  %s\n", $$1,$$2 }'
 
 .PHONY : test crossbuild release build clean
-test:          ## Run all the tests
-test:	clean
+test:	clean ## Run all the tests
 	chmod +x ./test.sh && ./test.sh
 
 clean:         ## Clean the application
-clean:
 	@go clean -i ./...
 	@rm -rf ./$(PROJECT_NAME)
 	@rm -rf build/*
 
 build: vendor
-	xgo -go 1.10.x -out=$(FLAGS) -ldflags=$(LDFLAGS) -targets='${GOOS}/${GOARCH}' .
+	CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -o '$(FLAGS)' -a -ldflags $(LDFLAGS)  .
 
-dep:           ## Go get dep
-dep:
-	go get -u github.com/golang/dep/cmd/dep
-
-xgo:           ## Go get XGO
-xgo:
-	go get -u github.com/karalabe/xgo
-
-ensure:        ## Run dep ensure.
-ensure:
-ifndef DEP
-  make dep
-endif
-	dep ensure
-	touch vendor
-
-ifndef XGO
-	make xgo
-endif
+vendor:           ## Go get vendor
+	go mod vendor
 
 crossbuild:
 	mkdir -p build/${PROJECT_NAME}-$(IDENTIFIER)
@@ -53,23 +33,18 @@ crossbuild:
 	&& tar cvzf "${PROJECT_NAME}-$(IDENTIFIER).tgz" "${PROJECT_NAME}-$(IDENTIFIER)" \
 	&& rm -rf "${PROJECT_NAME}-$(IDENTIFIER)"
 
-release:       ## Create a release build.
-release:	ensure	clean
+release:	vendor 	clean ## Create a release build.
 	make crossbuild GOOS=linux GOARCH=amd64
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64
 	make crossbuild GOOS=windows GOARCH=amd64
 
-
 bench:	       ## Benchmark the code.
-bench:
 	@go test -o bench.test -cpuprofile cpu.prof -memprofile mem.prof -bench .
 
-prof:          ## Run the profiler.
-prof:	bench
+prof:	bench ## Run the profiler.
 	@go tool pprof cpu.prof
 
-prof_svg:      ## Run the profiler and generate image.
-prof_svg:	clean	bench
+prof_svg:	clean	bench  ## Run the profiler and generate image.
 	@echo "Do you have graphviz installed? sudo apt-get install graphviz."
 	@go tool pprof -svg bench.test cpu.prof > cpu.svg

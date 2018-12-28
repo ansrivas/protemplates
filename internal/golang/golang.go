@@ -50,6 +50,7 @@ func (g Golang) Create(appname string) error {
 	gitignorePath := path.Join(srcdir, ".gitignore")
 	mainPath := path.Join(srcdir, "main.go")
 	licensePath := path.Join(srcdir, "LICENSE")
+	changelogPath := path.Join(srcdir, "CHANGELOG.md")
 
 	data := project.Dict{
 		"appname":     appname,
@@ -71,6 +72,7 @@ func (g Golang) Create(appname string) error {
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[mainPath] = mainText
 	pathToContent[licensePath] = parse(licenses.LicenseMap[g.License])
+	pathToContent[changelogPath] = changelogText
 
 	for path, content := range pathToContent {
 		err := project.WriteToFile(path, content)
