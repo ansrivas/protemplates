@@ -81,7 +81,7 @@ var devEnvYamlText = `name: {{.appWithHyphen}}-env
 channels:
   - defaults
 dependencies:
-- python=3.6.5
+- python=3.6.7
 - pip:
   - flake8
   - autopep8
