@@ -1,6 +1,5 @@
 .DEFAULT_GOAL := help
 
-DEP= $(shell command -v dep 2>/dev/null)
 VERSION=$(shell git describe --always --long)
 PROJECT_NAME := protemplates
 CLONE_URL:=gitlab.com/ansrivas/$(PROJECT_NAME)
@@ -39,7 +38,6 @@ release:	vendor 	clean ## Create a release build.
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64
 	make crossbuild GOOS=windows GOARCH=amd64
-
 
 bench:	       ## Benchmark the code.
 	@go test -o bench.test -cpuprofile cpu.prof -memprofile mem.prof -bench .

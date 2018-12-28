@@ -23,11 +23,20 @@ upload_test_pypi: readme_to_rst ## Build and upload distribution to testpypi ser
 	twine upload --skip-existing --repository testpypi dist/*
 
 .PHONY : upload_pypi
-upload_pypi: readme_to_rst ## Build and upload distribution to pypi server
+upload_pypi:  readme_to_rst    ## Build and upload distribution to pypi server
 	python setup.py bdist_wheel --dist-dir dist && \
 	twine upload --skip-existing --repository testpypi dist/*
 
 .PHONY : lint
-lint:             ## Run flake8 linter
+lint:             ## Run both flake8 and isort
+	make flake8
+	make isort
+
+.PHONY : flake8
+flake8:             ## Run flake8 linter
 	flake8 {{.appWithUnderScore}}
+
+.PHONY : isort
+isort:             ## Run isort on the source directory
+	isort --check-only --recursive {{.appWithUnderScore}}
 `
