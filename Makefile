@@ -13,7 +13,7 @@ help:          ## Show available options with this Makefile
 
 .PHONY : test crossbuild release build clean
 test:	clean ## Run all the tests
-	chmod +x ./test.sh && ./test.sh
+	go build . && chmod +x ./test.sh && ./test.sh
 
 clean:         ## Clean the application
 	@go clean -i ./...
