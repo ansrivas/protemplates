@@ -11,6 +11,20 @@ import (
 	"github.com/ansrivas/protemplates/internal/python"
 )
 
+const (
+	// readAuthorName is a string constant to be used as a prompt.
+	readAuthorName = "Please enter author name: for eg. Lovan Vivan"
+
+	// readAuthorEmail is a string constant to be used as a prompt.
+	readAuthorEmail = "Please enter author email:"
+
+	// readSCMInfo is a string constant to be used as a prompt.
+	readSCMInfo = "Please enter your scm for eg. github.com, bitbucket.com"
+
+	// readSCMUserName is a string constant to be used as a prompt.
+	readSCMUserName = "Please enter a username corresponding to your scm eg. github.com/ansrivas, then ansrivas"
+)
+
 // mustCreateProject tries to create a project and panics if something fails.
 func mustCreateProject(impl project.Project, projectName string) {
 	err := project.Create(impl, projectName)
@@ -90,10 +104,10 @@ func createProject(language string) {
 		}
 	}
 
-	author := readInput("Please enter author name: for eg. Lovan Vivan")
-	authoremail := readInput("Please enter author email:")
-	scm := readInput("Please enter your scm for eg. github.com, bitbucket.com")
-	scmusername := readInput("Please enter a username corresponding to your scm eg. github.com/ansrivas, then ansrivas")
+	author := readInput(readAuthorName)
+	authoremail := readInput(readAuthorEmail)
+	scm := readInput(readSCMInfo)
+	scmusername := readInput(readSCMUserName)
 
 	var impl project.Project
 	switch lang {

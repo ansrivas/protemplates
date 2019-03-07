@@ -4,9 +4,6 @@ const (
 	ticksthree  = "```"
 	newlineone  = "\n"
 	newlinestwo = "\n\n"
-	tabone      = "\t"
-	tabstwo     = "\t\t"
-	tabsthree   = "\t\t\t"
 )
 
 // commandMarkdown returns a markdown formatted version of a given input command with ticks, etc.
