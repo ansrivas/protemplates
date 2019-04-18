@@ -3,6 +3,7 @@ package python
 var setupyText = `import re
 from os import path
 from codecs import open  # To use a consistent encoding
+
 from setuptools import setup, find_packages
 
 here = path.abspath(path.dirname(__file__))
@@ -25,6 +26,13 @@ install_requires = ['future']
 test_requires = ['pytest', 'pytest-sugar', 'pytest-asyncio', 'pytest-cov', ]
 
 
+extras_require = {
+    'dev': [
+        '',
+    ]
+}
+
+
 setup(
     name='{{.appWithHyphen}}',
     description="Some description about your project",
@@ -33,6 +41,7 @@ setup(
     include_package_data=True,
     install_requires=install_requires,
     setup_requires=['pytest-runner'],
+    extras_require=extras_require,
     tests_require=test_requires,
     packages=find_packages(),
     zip_safe=False,
