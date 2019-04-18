@@ -31,8 +31,14 @@ func WriteToFile(filepath string, data string) error {
 		return err
 	}
 	defer f.Close()
-	f.WriteString(data)
-	f.Sync()
+	_, err = f.WriteString(data)
+	if err != nil {
+		return err
+	}
+	err = f.Sync()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
