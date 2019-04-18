@@ -30,7 +30,7 @@ Short Description.
 		`* This command creates a python environment and then activates it.` + newlineone +
 		commandMarkdown(`$ make recreate_pyenv && chmod +x activate-env.sh && . activate-env.sh`) + newlineone +
 		`* Now install the application in editable mode and you are ready to start development` + newlineone +
-		commandMarkdown(`$ pip install -e .`) + newlinestwo +
+		commandMarkdown(`$ pip install -e .[dev]`) + newlinestwo +
 		`## Test` + newlineone +
 		`To run the tests:` + newlineone +
 		commandMarkdown(`make test`) + newlineone +
