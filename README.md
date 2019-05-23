@@ -11,7 +11,11 @@
 
 This creates a simple project structure for different projects. ( similar to Cargo from rust )
 
+Download:
 ---
+
+Download a binary from [releases](https://github.com/ansrivas/protemplates/releases). Extract and its ready to be used.
+
 
 Usage:
 
@@ -40,4 +44,3 @@ Please enter a desired project name:
 ```
 
 ---
-Download a binary from [releases](https://github.com/ansrivas/protemplates/releases). Extract and its ready to be used.
