@@ -1,10 +1,11 @@
 module github.com/ansrivas/protemplates
 
 require (
-	github.com/kr/pretty v0.1.0 // indirect
 	github.com/spf13/cobra v0.0.7
-	github.com/stretchr/testify v1.4.0
-	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/objx v0.2.0 // indirect
+	github.com/stretchr/testify v1.5.1
+	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
 
-go 1.13
+go 1.14

@@ -1,3 +1,24 @@
+//
+// Copyright (c) 2020 Ankur Srivastava
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package golang
 
 import (
@@ -5,6 +26,7 @@ import (
 	"log"
 	"path"
 	"strconv"
+	"strings"
 	"text/template"
 	"time"
 
@@ -36,19 +58,33 @@ func New(projectName, license, author, authoremail, scm, scmusername string) pro
 func (g Golang) Create(appname string) error {
 
 	srcdir := appname
-
+	scriptsDir := path.Join(appname, "scripts")
 	if project.InitIfGitExist(srcdir) {
 		log.Printf("Created repo: [%s] %s", project.GreenText(project.SignSuccess), srcdir)
 	} else {
 		// if git is not present, create basedir in the beginning, yourself
 		project.MustCreateDir(srcdir)
 	}
+	project.MustCreateDir(scriptsDir)
+
+	// initialize go.mod
+	normalize := func(input string) string {
+		output := strings.TrimSuffix(input, "/")
+		output = strings.TrimPrefix(input, "/")
+		return output
+	}
+
+	goModInitURL := fmt.Sprintf("%s/%s/%s", g.Scm, normalize(g.ScmUserName), normalize(appname))
+	if !InitGoMod(srcdir, goModInitURL) {
+		log.Printf("Failed to initialize go.mod. Proceeding.")
+	}
 
 	makefilePath := path.Join(srcdir, "Makefile")
 	readmePath := path.Join(srcdir, "README.md")
-	testShellPath := path.Join(srcdir, "test.sh")
+	testShellPath := path.Join(scriptsDir, "test.sh")
 	gitignorePath := path.Join(srcdir, ".gitignore")
 	mainPath := path.Join(srcdir, "main.go")
+	mainTestPath := path.Join(srcdir, "main_test.go")
 	licensePath := path.Join(srcdir, "LICENSE")
 	changelogPath := path.Join(srcdir, "CHANGELOG.md")
 
@@ -71,6 +107,7 @@ func (g Golang) Create(appname string) error {
 	pathToContent[testShellPath] = testShellText
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[mainPath] = mainText
+	pathToContent[mainTestPath] = mainTestText
 	pathToContent[licensePath] = parse(licenses.LicenseMap[g.License])
 	pathToContent[changelogPath] = changelogText
 
@@ -83,6 +120,6 @@ func (g Golang) Create(appname string) error {
 		log.Printf("Created file: [%s] %s", project.GreenText(project.SignSuccess), path)
 		time.Sleep(time.Millisecond * 100)
 	}
-
+	project.InitialCommit(srcdir)
 	return nil
 }
