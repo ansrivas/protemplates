@@ -58,7 +58,11 @@ func New(projectName, license, author, authoremail, scm, scmusername string) pro
 func (g Golang) Create(appname string) error {
 
 	srcdir := appname
+	appWithUnderScoreCapitalized := strings.ToUpper(strings.Replace(appname, "-", "_", -1))
+
 	scriptsDir := path.Join(appname, "scripts")
+	internalDir := path.Join(appname, "internal")
+	configDir := path.Join(internalDir, "config")
 	if project.InitIfGitExist(srcdir) {
 		log.Printf("Created repo: [%s] %s", project.GreenText(project.SignSuccess), srcdir)
 	} else {
@@ -66,6 +70,8 @@ func (g Golang) Create(appname string) error {
 		project.MustCreateDir(srcdir)
 	}
 	project.MustCreateDir(scriptsDir)
+	project.MustCreateDir(internalDir)
+	project.MustCreateDir(configDir)
 
 	// initialize go.mod
 	normalize := func(input string) string {
@@ -74,10 +80,14 @@ func (g Golang) Create(appname string) error {
 		return output
 	}
 
-	goModInitURL := fmt.Sprintf("%s/%s/%s", g.Scm, normalize(g.ScmUserName), normalize(appname))
-	if !InitGoMod(srcdir, goModInitURL) {
+	goAppBasePath := fmt.Sprintf("%s/%s/%s", g.Scm, normalize(g.ScmUserName), normalize(appname))
+	if !InitGoMod(srcdir, goAppBasePath) {
 		log.Printf("Failed to initialize go.mod. Proceeding.")
 	}
+
+	configFilePath := path.Join(configDir, "config.go")
+	configTestFilePath := path.Join(configDir, "config_test.go")
+	configEnvFilePath := path.Join(configDir, "env.test")
 
 	makefilePath := path.Join(srcdir, "Makefile")
 	readmePath := path.Join(srcdir, "README.md")
@@ -89,24 +99,31 @@ func (g Golang) Create(appname string) error {
 	changelogPath := path.Join(srcdir, "CHANGELOG.md")
 
 	data := project.Dict{
-		"appname":     appname,
-		"author":      g.Author,
-		"year":        strconv.Itoa(time.Now().Year()),
-		"license":     g.License,
-		"authoremail": g.Authoremail,
-		"scm":         g.Scm,
-		"scmusername": g.ScmUserName,
+		"appname":                      appname,
+		"appWithUnderScoreCapitalized": appWithUnderScoreCapitalized,
+		"goAppBasePath":                goAppBasePath,
+		"author":                       g.Author,
+		"year":                         strconv.Itoa(time.Now().Year()),
+		"license":                      g.License,
+		"authoremail":                  g.Authoremail,
+		"scm":                          g.Scm,
+		"scmusername":                  g.ScmUserName,
 	}
 	parse := func(tpl string) string {
 		return project.ParseTemplateString(tpl, t, data)
 	}
 
 	pathToContent := make(project.Dict)
+
+	pathToContent[configFilePath] = parse(configFileText)
+	pathToContent[configTestFilePath] = parse(configTestFileText)
+	pathToContent[configEnvFilePath] = parse(envFileText)
+
 	pathToContent[makefilePath] = parse(makefileText)
 	pathToContent[readmePath] = parse(readmeText)
 	pathToContent[testShellPath] = testShellText
 	pathToContent[gitignorePath] = gitignoreText
-	pathToContent[mainPath] = mainText
+	pathToContent[mainPath] = parse(mainText)
 	pathToContent[mainTestPath] = mainTestText
 	pathToContent[licensePath] = parse(licenses.LicenseMap[g.License])
 	pathToContent[changelogPath] = changelogText
