@@ -82,7 +82,7 @@ func (p Python) Create(appname string) error {
 	}
 
 	setuppyPath := path.Join(basedir, "setup.py")
-	setupcfgPath := path.Join(basedir, "setup.cfg")
+	pyprojectPath := path.Join(basedir, "pyproject.toml")
 	gitignorePath := path.Join(basedir, ".gitignore")
 	makefilePath := path.Join(basedir, "Makefile")
 	requirementsPath := path.Join(basedir, "requirements.txt")
@@ -93,6 +93,7 @@ func (p Python) Create(appname string) error {
 	travisYmlPath := path.Join(basedir, ".travis.yml")
 	licensePath := path.Join(basedir, "LICENSE")
 	changelogPath := path.Join(basedir, "CHANGELOG.md")
+	dockerfilePath := path.Join(basedir, "Dockerfile")
 
 	initpyPath := path.Join(appdir, "__init__.py")
 
@@ -118,7 +119,7 @@ func (p Python) Create(appname string) error {
 
 	pathToContent := make(project.Dict)
 	pathToContent[setuppyPath] = parse(setupyText)
-	pathToContent[setupcfgPath] = parse(setupCfgText)
+	pathToContent[pyprojectPath] = parse(pyprojectText)
 	pathToContent[gitignorePath] = gitignoreText
 	pathToContent[conftestPath] = conftestText
 	pathToContent[testfilePath] = parse(testfileText)
@@ -133,6 +134,7 @@ func (p Python) Create(appname string) error {
 	pathToContent[examplesPath] = parse(examplesText)
 	pathToContent[licensePath] = parse(licenses.LicenseMap[p.License])
 	pathToContent[changelogPath] = changelogText
+	pathToContent[dockerfilePath] = dockerfileText
 
 	for path, content := range pathToContent {
 		err := project.WriteToFile(path, content)

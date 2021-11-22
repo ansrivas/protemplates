@@ -28,7 +28,7 @@ help:             ## Show available options with this Makefile
 
 .PHONY : test
 test:             ## Run all the tests
-	python setup.py test
+	pytest
 
 .PHONY : recreate_pyenv
 recreate_pyenv:   ## Create the python environment. Recreates if the env exists already.
@@ -49,15 +49,15 @@ upload_pypi:  readme_to_rst    ## Build and upload distribution to pypi server
 	twine upload --skip-existing --repository testpypi dist/*
 
 .PHONY : lint
-lint:             ## Run both flake8 and isort
-	make flake8
+lint:             ## Run both black and isort
+	make black
 	make isort
 
-.PHONY : flake8
-flake8:             ## Run flake8 linter
-	flake8 {{.appWithUnderScore}}
+.PHONY : black
+black:             ## Run black linter
+	black {{.appWithUnderScore}}
 
 .PHONY : isort
 isort:             ## Run isort on the source directory
-	isort --check-only --recursive {{.appWithUnderScore}}
+	isort --atomic --check-only --recursive {{.appWithUnderScore}}
 `
